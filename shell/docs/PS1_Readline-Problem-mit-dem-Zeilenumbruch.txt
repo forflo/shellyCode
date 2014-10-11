@@ -1,0 +1,2 @@
+Der Fehler lässt sich beheben, indem man um die Escape-Sequenzen
+die Zeichenketten \[ und \] legt!

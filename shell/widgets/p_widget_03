@@ -1,0 +1,50 @@
+#Autor: Florian Mayer
+#Datum: 18.Sept.2013
+#Net-Widget for the widget library
+#Bugs: 	Shows the output of the command "set" if 
+#		the Network is up without an ip address
+##
+
+P_WIDGET_03_INDEX=3 # until now this variable is unused
+P_WIDGET_03_ENABLE=true
+P_WIDGET_03_FG=$FG_WHITE 
+P_WIDGET_03_BG= 
+P_WIDGET_03_DATA= # unnecessary
+OS=$(uname)
+
+p_widget_03(){
+	case $OS in
+		(Darwin)
+			set $(airport -I) dummytext
+			local ssid=${29}
+			local eth_active=
+			local wifi_active=
+			local komma=
+			local if_string_ip=$(ifconfig en0 | sed -n '/inet /p')
+			local if_string_stat="$(ifconfig en0 | grep inactive)"
+			if [ -n "$if_string_stat" ]; then
+				eth_active=
+			else 
+				komma=", "
+				set $if_string_ip dummytext
+				eth_active=eth@${2}
+			fi
+			local if_string_ip=$(ifconfig en1 | sed -n '/inet /p')
+			local if_string_stat="$(ifconfig en1 | grep inactive)"
+			if [ -n "$if_string_stat" ]; then
+				wifi_active=
+				komma=
+			else 
+				set $if_string_ip dummytext
+				wifi_active=wifi-"($ssid)"@${2}
+			fi
+			set --
+			P_WIDGET_03_DATA="Net: active=[$eth_active${komma}$wifi_active]"
+			;;
+		(Linux)
+			
+			;;
+		(*)
+			;;	
+	esac
+}

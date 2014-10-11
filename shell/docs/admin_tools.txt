@@ -1,0 +1,66 @@
+In dieser Datei befinden sich die Hilftexte der folgenden Tools:
+- dwake
+- dcopy
+- dcmd
+
++----------------------------------------------------------------+
+[dwake]
+
+$0      [ -g <group> | -r <regex> ] 
+                [ -f <machinefile> ]
+                [ -q ] 
+                [ -w <time to wait> ] 
+
+        <group> := defines the group of computers to send commands to
+        <regex> := regex for computernames or ip addresses to match
+        <machinefile> := the file to read machine names and mac addersses from
+        q := silent output if set
+        w := the time between the single magic pakets
++----------------------------------------------------------------+
+[dcopy]
+
+$0      [ -g <group> | -r <regex> ] 
+                [ -u <user> ] 
+                [ -f <machinefile> ]
+                [ -q ] 
+                [ -p <portnumber> ] 
+                [ -s ]
+                [ -d ]
+                <source file/dir> <destination file/dir>
+                
+
+        <group> := defines the group of computers to send commands to
+        <regex> := regex for computernames or ip addresses to match
+        <user> := defines the user to connect to
+        <machinefile> := the file to read machine names and mac addersses from
+        q := silent output if set
+        p := defines the portnumber the ssh command should use
+        s := specifies whether the commands should be run 
+                                all at the same time. There is no output for
+                                the simultaneous mode!
+        d := specifies whether there should be a dry run. 
+        <source file/dir ...> := The name should be sufficient information
++----------------------------------------------------------------+
+[dcmd]
+
+$0      [ -g <group> | -r <regex> ] 
+                [ -u <user> ] 
+                [ -f <machinefile> ]
+                [ -q ] 
+                [ -p <portnumber> ] 
+                [ -s ]
+                [ -o <output dir> ] 
+                [ -d ]
+                <command>
+
+        <group> := defines the group of computers to send commands to
+        <regex> := regex for computernames or ip addresses to match
+        <user> := defines the user to connect to
+        <machinefile> := the file to read machine names and mac addersses from
+        q := silent output if set
+        p := defines the portnumber the ssh command should use
+        s | simultaneous :=     specifies whether the commands should be run 
+                                all at the same time
+        d := dry run. Nothing is executed here
+        <command> := this is where the fun part starts!
++----------------------------------------------------------------+

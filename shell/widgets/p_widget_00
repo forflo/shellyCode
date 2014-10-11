@@ -1,0 +1,14 @@
+#Autor: Florian Mayer
+#Datum: 10.Sept.2013
+#Date widget for the widget library
+###
+
+P_WIDGET_00_INDEX=0 #Stelle im Widget-Bereich des Prompts, an dem P_WIDGET_DATA_nn angezeigt werden soll
+P_WIDGET_00_ENABLE=true
+P_WIDGET_00_FG=$FG_GREEN #Farbcode für den Vordergrund
+P_WIDGET_00_BG= #Farbcode für den Hintergrund
+P_WIDGET_00_DATA= #
+
+p_widget_00(){
+	P_WIDGET_00_DATA=$(date "+%d.%m.%y-%H:%M")
+}

@@ -1,0 +1,48 @@
+#Autor: Florian Mayer
+#Datum: 18.Sept.2013
+#Zweck: The sys stat widget
+#Bugs: Makes the system terribly slow! 
+##
+
+P_WIDGET_04_INDEX=4 # until now this variable is unused
+P_WIDGET_04_ENABLE=true
+P_WIDGET_04_FG=$FG_PURPLE 
+P_WIDGET_04_BG= 
+P_WIDGET_04_DATA= # unnecessary
+OS=$(uname)
+
+p_widget_04(){
+	local prozess_count=
+	local free_hdd=
+	local io_stat=
+	local free_mem=
+	local cached_mem=
+	local used_mem=
+	local amount_mem=
+	local amount_users=
+	case $OS in
+		(Darwin)
+			amount_users=$(who | wc -l)
+			set $(df 2> /dev/null)
+			free_hdd="${15}"
+			#set $(top -l 1 -s 0 | head -n 10) # display the stats only once, then exit 
+			prozess_count="$(ps -ef | wc -l)"
+			P_WIDGET_04_DATA="Sys: users-[$amount_users] df-[$free_hdd] ps-[$prozess_count]"	
+			set --
+			;;
+		(Linux)
+			amount_users=$(who | wc -l)
+			set $(df 2> /dev/null)
+			free_hdd="${10}"
+			prozess_count="$[$(ps -ef | wc -l)-2]"
+			set $(free -m) dummy # currently searching for a solution for this problem
+			free_mem=${10}MiB
+			cached_mem=${13}MiB
+			amount_mem=${8}MiB
+			P_WIDGET_04_DATA="Sys: users-[$amount_users] hdd-[free: $free_hdd] mem-[$free_mem/$amount_mem, c:$cached_mem] ps-[$prozess_count]"	
+			set --
+			;;
+		(*)
+			;;	
+	esac
+}

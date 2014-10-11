@@ -1,0 +1,69 @@
+PROMPT_COMMAND:	- Neue Funktion -> status (jedes Mal, wenn enter gedrückt wird, druckt
+		die Funktion einen Statusbericht mit uhr, prozessorauslastung usw. an eine
+		konfigurierbare stelle im Terminal. Dabei soll lediglich tput benutzt werden.
+
+		- Neue Funktion prompt_update setzt den prompt neu und ermöglicht so auch dyanmische
+		Variablen anzuzeigen und z.B. Commando-Substitutionen durchzuführen => eine akkuanzeige
+		im Prompt wird möglich!
+
+TERM_WIDGETS:	- Zunächst zugrundeliegende Bibliothek zum Zeichnen von Primitiven, wie z.B. Linien, Kreisen oder Vierecken
+		(im Extremen mit anti-aliasing) 
+
+Brainstorm TERM_WIDGETS:
+
+im der Variablen PROMPT_COMMAND liegen Funktionsaufrufe der Form
+t_widget_nn oder p_widget_nn , wobei n in (0,...,9)
+die Funktionen sind unter $BASH_LIB/widgets/(t|p)_widget_nn.sh 
+untergebracht. Sie werden nach dem Sourcing der Funktionen in
+$BASH_LIB/funktionen gesourced. Es gibt zwei Arten von Widgets.
+- Prompt Widgets: 
+	Kümmert sich um die Anzeige von komplexeren Daten
+	auf dem Prompt wie z.B. 
+	* GIT-Repo Übersicht
+	* SVN-Repo Übersicht
+	* Akkustatus
+	* Laptop oder Desktop
+	* CPU-Auslastung
+	* Memory-Auslastung
+	* uvm...
+	
+	Dabei enthält das Widget eine globale Variable, die im Prompt
+	referenziert wird und die Daten bereitstellt. Die kontinuierliche
+	Ausführung des Codes in PROMPT_COMMAND sorgt darüf, dass die Variable
+	stets aktuelle Daten enthält.
+
+- Term Widgets: (experimentell und noch zu überdenken!)
+	Kümmert sich um die Anzeige von komplexesten Daten
+	an bestimmten Positionen im Terminal. Anwendungsbeispiele:
+	* Uhrzeit
+	* Verzeichnisbaumausschnitt
+	* Freier Speicherplatz
+
+	Ein Widget dieser Art zeichnet unabhängig von der Position des Prompts
+	in das aktuelle Terminal. Natürlich wird dabei beachtet nur an die
+	oberste Bildschirmposition zu zeichnen.
+
+
+[Template für ein Prompt Widget]
+-Dateiname p_widget_00
+
+
+INDEX_nn= #Stelle im Widget-Bereich des Prompts, an dem P_WIDGET_DATA_nn angezeigt werden soll
+P_WIDGET_nn_FG= #Farbcode für den Vordergrund
+P_WIDGET_nn_BG= #Farbcode für den Hintergrund
+P_WIDGET_nn_DATA= #
+
+p_widget_00(){
+	#...
+	#Code der P_WIDGET_DATA manipuliert
+	#...
+}
+
+----------
+System-Widget
+Informationen die angezeigt werden sollen:
+- CPU
+- I/O
+- laufende Prozesse
+- Freier bzw. belegter Ram
+- Freier Platz auf der HDD
