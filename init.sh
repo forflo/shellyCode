@@ -1,3 +1,3 @@
 #!/bin/bash
 
-clog 2 "[shellyCode]" Dummy impl.
+clog 2 "[shellyCode]" Nothing to do.
