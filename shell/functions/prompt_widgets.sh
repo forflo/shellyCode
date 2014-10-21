@@ -1,5 +1,5 @@
 DELIMITER="|"
-WIDGET_DIR="~/repos/git/shellyCode/shell/widgets/"
+WIDGET_DIR=~/repos/git/shellyCode/shell/widgets/
 P_NULL="yes"
 ##
 # LINE_BREAK specifies the number of widgets to show on one line
