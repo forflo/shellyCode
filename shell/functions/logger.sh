@@ -1,8 +1,8 @@
-# Autor: Florian Mayer
-# Datum: 31.August.2013
-#
-# For Documentation see $REPO/code/shell/docs
+####
 ##
+# Logging functions
+##
+####
 
 LOG_DATEOPTS="+%d.%h.%Y-%H:%M:%S"
 LOG_POPEN="["
@@ -11,7 +11,7 @@ LOG_PCLOSE="]"
 ##
 # Variables for this module
 ##
-LOG_PROMPT=${POPEN}"$(uname -rs) | $(date $OPTS) | $(tty)"$PCLOSE" "
+LOG_PROMPT=""
 LOG_PROMPT_FUNC="log_prompt"
 
 log_reset_prompt(){
@@ -70,10 +70,11 @@ blog(){
 #   1: on fawithoutilure
 ##
 clog(){
-	[[ "$#" = 0 ]] || {
-		echo Sie müssen einen Farbcode bereitstellen!
-		echo Zeile: $LINENO	
-		return 1
+	[ "$#" = "0" ] && {
+		is_int "$1" || {
+			echo You have to provide a color code
+			return 1
+		}
 	}
 
 	# only colorization if stdout referes to a terminal!
@@ -132,10 +133,12 @@ clog(){
 #   1: on failure
 ##
 flog(){
-	if [ $# = 0 ] || ! is_int "$1"; then
-		echo You have to provide a color code
-		return 1
-	fi
+	[ "$#" = "0" ] && {
+		is_int "$1" || {
+			echo You have to provide a color code
+			return 1
+		}
+	}
 	
 	local color="${TERM_COLORS_VALUES[$1]}"
 	local format=""
