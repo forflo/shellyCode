@@ -57,6 +57,12 @@ onos(){
 	return 0
 }
 
+##
+# Param
+#   $1: one of {cygwin7,cygwinxp,linux,darwin,others}
+# Return:
+#   0 if $1 describes the current platform, 1 if not
+##
 onos_ret(){
 	case "$(uname -a)" in
 		(CYGWIN_NT-6.1) [ "${i}" = "cygwin7" ] && return 0 || return 1;;
