@@ -26,27 +26,30 @@ alias edit_vimrc="vim ~/.vimrc"
 alias edit_sysconf="vim ~/environment/configuration/mapping"
 
 
-function reinstall_env(){
-	local cpwd="$(pwd)"
-	cd ~/environment/environment/
-	./install.sh
-	cd "$cpwd"
-	reload
+function env_reinstall(){
+	curl -L http://bit.ly/1wg9vdQ | bash || {
+		clog 1 "env_reinstall" Reinstalling failed!
+		return 1
+	}
+	
+	return 0
 }
 
 ##
 # ls
 ##
-alias "ls"="ls --color=auto"
+onos_exec linux 'alias "ls"="ls --color=auto"' darwin 'alias "ls"="ls -G"'
 alias "ll"="ls -la"
 alias "bc"="bc -l"
 
 ##
 # MacPorts
 ##
-alias "pfind"="port search"
-alias "pinst"="sudo port install"
-alias "pupt"="sudo port selfupdate"
+onos_ret darwin {
+	alias "pfind"="port search"
+	alias "pinst"="sudo port install"
+	alias "pupt"="sudo port selfupdate"
+}
 
 ##
 # python and scripting languages
@@ -95,7 +98,6 @@ fi
 alias "connectsrv"="ssh -p 7779 root@192.168.2.119"
 alias "connectklingon"="ssh florian@klingon.inf.fh-rosenheim.de"
 alias "connecttartaros"="ssh root@tartaros.mooo.com"
-
 
 ##
 # System
