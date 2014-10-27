@@ -53,6 +53,18 @@ onos(){
 			done
 			;;
 	esac
+
+	return 0
+}
+
+onos_ret(){
+	case "$(uname -a)" in
+		(CYGWIN_NT-6.1) [ "${i}" = "cygwin7" ] && return 0 || return 1;;
+		(CYGWIN_NT-5) [ "${i}" = "cygwinxp" ] && return 0 || return 1;;
+		([L][l]inux) [ "${i}" = "linux" ] && return 0 || return 1;;
+		(Darwin*) [ "${i}" = "darwin" ] && return 0 || return 1;;
+		(*) [ "${i}" = "others" ] && return 0 || return 1;; 
+	esac
 	
 	return 0
 }
