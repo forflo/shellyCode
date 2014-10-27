@@ -9,7 +9,7 @@
 #   $5: operating system name
 #   $6: things to return
 #   [...]
-#     $1, $3 and $5 could be one of {linux, cygwin, darwin, archlinux, ubuntu} 
+#     $1, $3 and $5 could be one of {linux, cygwin7, darwin, cygwinxp, others} 
 # Return
 #   0 on success
 #   1 on error
@@ -20,42 +20,40 @@
 #   => echo "fru" on linux, echo "bla on cygwin ...
 ##
 onos(){
-	if [ -z "$1" -o -z "$2" ] || (($#%2)) ; then
+	local k=1
+
+	if [ -z "$1" -o -z "$2" ] || (($#%2)); then
 		return 1
 	fi
-	local k=1
+
 	case "$(uname -a)" in
-		(*ARCH*)
-			for i in "$@"; do
-				((k++))
-				[ "${i}" = "archlinux" ] && echo ${!k}
-			done
-			;;
-		(*Ubuntu*)
-			for i in "$@"; do
-				((k++))
-				[ "${i}" = "ubuntulinux" ] && echo ${!k}
-			done
-			;;
 		(CYGWIN_NT-6.1)
 			for i in "$@"; do
-				((k++))
-				[ "${i}" = "cygwin7" ] && echo ${!k}
+				((k++)); [ "${i}" = "cygwin7" ] && echo ${!k}
 			done
 			;;
 		(CYGWIN_NT-5)
 			for i in "$@"; do
-				((k++))
-				[ "${i}" = "cygwinxp" ] && echo ${!k}
+				((k++)); [ "${i}" = "cygwinxp" ] && echo ${!k}
+			done
+			;;
+		([L][l]inux)
+			for i in "$@"; do
+				((k++)); [ "${i}" = "linux" ] && echo ${!k}
 			done
 			;;
 		(Darwin*)
 			for i in "$@"; do
-				((k++))
-				[ "${i}" = darwin ] && echo ${!k}
+				((k++)); [ "${i}" = "darwin" ] && echo ${!k}
+			done
+			;;
+		(*)
+			for i in "$@"; do
+				((k++)); [ "${i}" = "others" ] && echo ${!k}
 			done
 			;;
 	esac
+	
 	return 0
 }
 
