@@ -45,7 +45,7 @@ alias "bc"="bc -l"
 ##
 # MacPorts
 ##
-onos_ret darwin {
+onos_ret darwin && {
 	alias "pfind"="port search"
 	alias "pinst"="sudo port install"
 	alias "pupt"="sudo port selfupdate"
