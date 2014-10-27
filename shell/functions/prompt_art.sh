@@ -1,7 +1,7 @@
 #Prompt-Art
 SUFFIX="prompt_art_"
 PFAD=~/repos/git/shellyCode/data/prompt_art
-FILE="$SUFFIX$(random_simple $(ls $PFAD/* | wc -l)).txt"
+FILE="$SUFFIX$(random_simple $(ls $PFAD/ | wc -l)).txt"
 LINE_COUNT=$(cat "$PFAD"/$FILE | wc -l)
 COUNT=0
 
