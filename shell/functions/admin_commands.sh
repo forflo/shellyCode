@@ -16,6 +16,9 @@ alias dWake_11="dwake -r NTB011"
 alias dWake_9="dwake -r NTB009[0-9][0-9]"
 alias dWake_9A="dwake -r NTB009[Aa]"
 
+alias dSwitch_win="ln -fs ~/.ssh/known_hosts_win ~/.ssh/known_hosts"
+alias dSwitch_lin="ln -fs ~/.ssh/known_hosts_lin ~/.ssh/known_hosts"
+
 ##
 # Windows
 ##
@@ -27,8 +30,16 @@ alias dcmd_9Awin="dcmd -r NTB009[Aa] -u Administrator"
 alias dcmd_9win="dcmd -r NTB009[0-9][0-9] -u Administrator"
 
 alias dDeployDirtree_8win="dnames -r NTB008A ; xargs -L 1 ./deploy_sysconfig.sh -d "/" -r" # --- pruefen!
-alias dAutologonAuto_8win="dcmd -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows\ NT/CurrentVersion/Winlogon/AutoAdminLogon\" 1"
-alias dAutologonNoauto_8win="dcmd -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows\ NT/CurrentVersion/Winlogon/AutoAdminLogon\" 0"
+alias dAutologonAuto_8win="dcmd -qs -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows\ NT/CurrentVersion/Winlogon/AutoAdminLogon\" 1"
+alias dAutologonNoauto_8win="dcmd -qs -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows\ NT/CurrentVersion/Winlogon/AutoAdminLogon\" 0"
+
+alias dEnableRdp="dcmd -qs -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/fDenyTSConnections\" 0"
+alias dDisableRdp="dcmd -qs -r NTB008A -u Administrator regtool --wow64 set \"/HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/fDenyTSConnections\" 1"
+
+alias dEnableICMP="dcmd -qs -r NTB008A -u Administrator netsh firewall set icmpsetting 8 enable"
+alias dDisableICMP="dcmd -qs -r NTB008A -u Administrator netsh firewall set icmpsetting 8 disable"
+
+alias dDoUpdate="dcmd -qs -r NTB008A -u Administrator wupd.bat"
 
 #Systemstart- und Ende
 alias dReboot_8Awin="dcmd -r NTB008[aA] -qs -u Administrator shutdown -r -t 00"
@@ -58,7 +69,7 @@ alias dDisableGuestLogin_8Alin="dcmd -r NTB008[aA] -u root -qs /usr/lib/lightdm/
 alias dUpdateGrub_8Alin="dcmd -qs -u root -r NTB008[Aa] update-grub"
 alias dGrubSetDefault_8Alin="dcmd -qs -u root -r NTB008[aA] grub-set-default"
 
-alias dBootwin_8lin="dcmd -r NTB008[aA] -u root grub-set-default 1\; grub-reboot 0" 
+alias dBootwin_8Alin="dcmd -qs -r NTB008[aA] -u root grub-reboot 4" 
 
 alias dShutdown_8Alin="dcmd -r NTB008[aA] -qs -u root shutdown -h now"
 alias dReboot_8Alin="dcmd -r NTB008[aA] -qs -u root shutdown -r now"
