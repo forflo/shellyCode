@@ -39,7 +39,7 @@ alias dDisableRdp="dcmd -qs -r NTB008A -u Administrator regtool --wow64 set \"/H
 alias dEnableICMP="dcmd -qs -r NTB008A -u Administrator netsh firewall set icmpsetting 8 enable"
 alias dDisableICMP="dcmd -qs -r NTB008A -u Administrator netsh firewall set icmpsetting 8 disable"
 
-alias dDoUpdate="dcmd -qs -r NTB008A -u Administrator wupd.bat"
+alias dDoUpdate="dcmd -qs -r NTB008A -u Administrator 'cscript C:\\\\Cygwin\\\\home\\\\Administrator\\\\wupd.vbs'"
 
 #Systemstart- und Ende
 alias dReboot_8Awin="dcmd -r NTB008[aA] -qs -u Administrator shutdown -r -t 00"
