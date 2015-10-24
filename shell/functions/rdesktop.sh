@@ -3,7 +3,7 @@
 # $1: username
 # $2: fully destinguished computer name
 ##
-connect_rdesktop(){
+sl-connect-rdesktop(){
     if [ "$1" = "--help" -o "$1" = "-h" ]; then
         cat << EOF
 usage: connect_rdesktop <username> <computer>
@@ -18,7 +18,6 @@ EOF
     local keyboard=de
 
     rdesktop -k $keyboard -u ${computer%%.*}\\$user -d $domain -g $resolution -p - $computer
-
     return 0
 }
 
@@ -27,7 +26,7 @@ EOF
 # $2: fully distinguished computer name
 # $2: path (local) to share with the server
 ##
-connect_rdesktop_+share(){
+sl-connect-rdesktop+share(){
     if [ "$1" = "--help" -o "$1" = "-h" ]; then
         cat << EOF
 usage: connect_rdesktop_+share <username> <computer> <local_path_to_share>
@@ -43,6 +42,5 @@ EOF
     local share_path="$3"
 
     rdesktop -k $keyboard -u ${computer%%.*}\\$user -d $domain -g $resolution -p - $computer -r disk:rdp_share="$3"
-
     return 0
 }

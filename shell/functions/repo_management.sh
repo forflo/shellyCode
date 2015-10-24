@@ -26,7 +26,7 @@ alias "ha"="hg add"
 #   0: on success
 #   1: on failure
 ##
-function git_create_bare(){
+sl-git-create-bare(){
 	echo "Name des Repos: "
 	read repo
 	mkdir "$repo" || {
@@ -51,7 +51,7 @@ function git_create_bare(){
 #   0: on success
 #   1: on failure
 ##
-function git_commit_all(){
+sl-git-commit-all(){
 	if [ -n "$1" ]; then
 		local cmsg="$1"
 	fi
@@ -96,7 +96,7 @@ function git_commit_all(){
 #   1: on failure (just one push-failure is 
 #		sufficient to let the function fail)
 ##
-function git_push_all(){
+sl-git-push-all(){
 	if [ -n "$1" ]; then	
 		return 1
 	else 
@@ -145,7 +145,7 @@ function git_push_all(){
 #   1: on failure (just one push-failure is 
 #		sufficient to let the function fail)
 ##
-function git_push_all(){
+sl-git-push-all(){
 	echo saving current dir
 	local cpwd="$PWD"
 	echo changing in  repodir
@@ -190,7 +190,7 @@ function git_push_all(){
 #   0: on success
 #   1: on failure
 ##
-function git_pull_all(){
+sl-git-pull-all(){
 	if [ -n "${1}" ]; then
 		return 1
 	else

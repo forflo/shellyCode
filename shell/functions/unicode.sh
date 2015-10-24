@@ -1,46 +1,46 @@
 ##
 # Box drawing light (U+2500...)
 ##
-TLC="┌"
-BLC="└"
-TRC="┐"
-BRC="┘"
-HL="─"
-VL="│"
-TL="├" # Tee pieces
-TR="┤"
-TB="┴"
-TT="┬"
-CROSS="┼"
+SL_TLC="┌"
+SL_BLC="└"
+SL_TRC="┐"
+SL_BRC="┘"
+SL_HL="─"
+SL_VL="│"
+SL_TL="├" # Tee pieces
+SL_TR="┤"
+SL_TB="┴"
+SL_TT="┬"
+SL_CROSS="┼"
 
 ##
 # Symbols
 ##
-HEART="❤"
+SL_HEART="❤"
 
 ##
 # This is used for compatibility
 ##
-set_ascii_mode(){
-	TLC="+"
-	BLC="+"
-	TRC="+"
-	BRC="+"
-	HL="-"
-	VL="|"
-	TL="|" # Tee pieces
-	TR="|"
-	TB="+"
-	TT="+"
-	CROSS="+"
+sl-set-ascii-mode(){
+	SL_TLC="+"
+	SL_BLC="+"
+	SL_TRC="+"
+	SL_BRC="+"
+	SL_HL="-"
+	SL_VL="|"
+	SL_TL="|" # Tee pieces
+	SL_TR="|"
+	SL_TB="+"
+	SL_TT="+"
+	SL_CROSS="+"
 
 	##
 	# Symbols
 	##
-	HEART="❤"
+	SL_HEART="❤"
 		
 }
 
 if [ "$TERM" = vt100 ]; then
-	set_ascii_mode
+	sl-set-ascii-mode
 fi

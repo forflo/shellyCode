@@ -1,29 +1,30 @@
-#mods
-function mod_new(){
+# Module functions
+# Create new function files in this directory
+sl-mod-new(){
     if [ -z "$1" ]; then
-        echo more arguments!
+        echo Please specify the module name!!
         return 1
     fi
 
-    local new=~/repos/git/shellyCode/shell/functions/$1.sh
+    local new=$HOME/repos/git/shellyCode/shell/functions/$1.sh
     echo \#$1 > $new
     vim $new
-    return
+    return 0
 }
 
-function mod_list(){
-    for i in ~/repos/git/shellyCode/shell/functions/*; do
+sl-mod-list(){
+    for i in $HOME/repos/git/shellyCode/shell/functions/*; do
         echo $i
     done
 
-    return
+    return 0
 }
 
-function func_list(){
+sl-func-list(){
     declare -f | grep "[[:alnum:]_-]*\ \(\)"
 }
 
-function func_show(){
+sl-func-show(){
     if [ -z "$1" ]; then
         echo more arguments!
         return 1

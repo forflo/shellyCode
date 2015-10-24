@@ -5,7 +5,6 @@
 #Präfix: net
 ##
 
-
 alias netspoofmac="sudo ifconfig en0 ether 08:00:27:69:02:D4; sudo ifconfig en0 up"
 alias netspoofmac_rand="sudo ifconfig en0 ether \$(gen_mac_add) ; sudo ifconfig en0 up"
 

@@ -1,4 +1,4 @@
-readline_help(){
+sl-readline-help(){
     cat << EOF
 Bare Essentials
 ===============
@@ -65,7 +65,7 @@ use readline_help_web()!
 EOF
 }
 
-readline_help_web(){
+sl-readline-help-web(){
     firefox http://tiswww.case.edu/php/chet/readline/readline.html & 2>/dev/null
     return
 }

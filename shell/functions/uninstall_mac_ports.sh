@@ -1,6 +1,13 @@
-#!/bin/bash
+sl-uninstall-macports(){
+	[] && {
+		cat << EOL
+usage: sl-uninstall-macports
+       => uninstalls the macports package from a
+          os x system
+EOL	
+		return 0
+	}
 
-uninstall_mac_ports(){
 	sudo port -fp uninstall --follow-dependents installed
 
 	sudo rm -rf \
@@ -15,4 +22,5 @@ uninstall_mac_ports(){
 	    /Library/Tcl/macports1.0 \
 	    ~/.macports
 
+	return 0
 }
