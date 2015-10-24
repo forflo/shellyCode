@@ -14,14 +14,14 @@ alias ed-repconf="vim ~/repos/git/shellyRepo/shellyRepoConf.sh"
 ##
 # ls
 ##
-onos_exec linux 'alias "ls"="ls --color=auto"' darwin 'alias "ls"="ls -G"'
+sl-onos-exec linux 'alias "ls"="ls --color=auto"' darwin 'alias "ls"="ls -G"'
 alias "ll"="ls -la"
 alias "bc"="bc -l"
 
 ##
 # MacPorts
 ##
-onos_ret darwin && {
+sl-onos-ret darwin && {
 	alias "pfind"="port search"
 	alias "pinst"="sudo port install"
 	alias "pupt"="sudo port selfupdate"
@@ -37,6 +37,7 @@ alias hassgefick="ghci"
 alias copy-pkgconfig="cp /usr/share/pacman/PKGCONFIG.sample"
 alias luarocks-upload="luarocks upload --api-key=\"mHcERL228mI5ujYP288RPT5F1yG75Z4686WPtX9D\" "
 alias t="todo.sh"
+TF_ALIAS=fuck alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
 
 ##
 # Sed & grep
@@ -52,10 +53,9 @@ alias "cdenv"="cd $HOME/environment"
 alias "cdetc"="cd /etc"
 alias "cdclib"="cdenv; cd code/c/clib"
 alias "cdctools"="cdenv; cd code/c/tools"
-#alias cdd="$(onos cygwin "cd /cygdrive/c/Users/$(whoami)/Desktop" linux 'cd ~/Desktop' darwin 'cd ~/Desktop')"
-alias cdd="$(onos darwin 'cd ~/Desktop' cygwin "")"
+alias cdd="$(sl-onos darwin 'cd ~/Desktop' cygwin "")"
 
-onos_ret darwin && {
+sl-onos-ret darwin && {
 	alias "cdScreenshots"="cd /Users/florianmayer/Pictures/Screenshots"
 	alias "openScreenshots"="open /Users/florianmayer/Pictures/Screenshots"
 	alias "cdstud"="cd /Users/florian/Documents/FhRosenheimLernstoff/Material/"
@@ -81,4 +81,4 @@ alias "mkdircd"="urRx(){ mkdir -p \"\$1\"; cd \"\$1\"; }; urRx; unset urRx"
 alias "info"="info --vi-keys"
 
 alias gnulib="echo git clone git://git.sv.gnu.org/gnulib.git"
-onos_exec linux 'alias asc="osascript"'
+sl-onos-exec linux 'alias asc="osascript"'

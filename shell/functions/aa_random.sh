@@ -6,7 +6,7 @@
 #   0 on success
 #   1 on failure
 ##
-random_simple(){
+sl-random-simple(){
 	if [ -z "$1" ]; then
 		return 1
 	else
@@ -23,21 +23,16 @@ random_simple(){
 #   0 on success
 #   1 on failure
 ##
-random_file(){
-	if [ -z "$1" ]; then
-		return 1
-	fi
-
-	if [ -d "$1" ]; then
-		cd "$1"
-	fi
+sl-random-file(){
 	local count=0
+    local files=()
 	for i in *; do
-		[ -f $i ] && FILES[count]=$i
-		((count++))
-	done	
+		[ -f $i ] && {
+            files[count]="$i"
+		    ((count++))
+        }
+	done
 
-	cd $OLDPWD
-	echo ${FILES[$(random_simple ${#FILES[*]})]}
+	echo ${files[$(random_simple ${#files[*]})]}
 	return 0
 }

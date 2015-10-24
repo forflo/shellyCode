@@ -57,7 +57,7 @@ latex_install_package(){
 	}
 
 	# get path for tex-makro packages (os dependent)
-	local path_dist=$(onos archlinux "/usr/share/texmf-dist/" \
+	local path_dist=$(sl-onos archlinux "/usr/share/texmf-dist/" \
 						darwin "$HOME/Library/texmf/" \
 						cygwin7 "$HOME/texmf/" \
 						cygwinxp "$HOME/texmf/")
@@ -117,7 +117,7 @@ latex_remove_package(){
 	fi	
 
 	# get path for tex-makro packages (os dependent)
-	local path_dist=$(onos archlinux "/usr/share/texmf-dist/" \
+	local path_dist=$(sl-onos archlinux "/usr/share/texmf-dist/" \
 						darwin "$HOME/Library/texmf/" \
 						cygwin7 "$HOME/texmf/" \
 						cygwinxp "$HOME/texmf/")

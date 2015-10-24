@@ -19,7 +19,7 @@
 #   $ onos linux "fru" cygwin "bla" darwin "ufda" [...]
 #   => echo "fru" on linux, echo "bla on cygwin ...
 ##
-onos(){
+sl-onos(){
 	local k=1
 
 	if [ -z "$1" -o -z "$2" ] || (($#%2)); then
@@ -27,34 +27,29 @@ onos(){
 	fi
 
 	case "$(uname -a)" in
-		(CYGWIN_NT-6.1)
+		(CYGWIN_NT-6.1*)
 			for i in "$@"; do
-				((k++)); [ "${i}" = "cygwin7" ] && echo ${!k}
-			done
-			;;
-		(CYGWIN_NT-5)
+				((k++)); [[ "${i}" = [Cc]ygwin7 ]] && echo ${!k}
+			done ;;
+		(CYGWIN_NT-5*)
 			for i in "$@"; do
-				((k++)); [ "${i}" = "cygwinxp" ] && echo ${!k}
-			done
-			;;
-		([L][l]inux)
+				((k++)); [[ "${i}" = [Cc]ygwinxp ]] && echo ${!k}
+			done ;;
+		([Ll]inux*)
 			for i in "$@"; do
-				((k++)); [ "${i}" = "linux" ] && echo ${!k}
-			done
-			;;
+				((k++)); [[ "${i}" = [Ll]inux ]] && echo ${!k}
+			done ;;
 		(Darwin*)
 			for i in "$@"; do
-				((k++)); [ "${i}" = "darwin" ] && echo ${!k}
-			done
-			;;
+				((k++)); [[ "${i}" = [Dd]arwin ]] && echo ${!k}
+			done ;;
 		(*)
 			for i in "$@"; do
-				((k++)); [ "${i}" = "others" ] && echo ${!k}
-			done
-			;;
+				((k++)); [[ "${i}" = [Oo]thers ]] && echo ${!k}
+			done ;;
 	esac
 
-	return 0
+    return 0
 }
 
 ##
@@ -63,16 +58,14 @@ onos(){
 # Return:
 #   0 if $1 describes the current platform, 1 if not
 ##
-onos_ret(){
+sl-onos-ret(){
 	case "$(uname -a)" in
-		(CYGWIN_NT-6.1) [ "${i}" = "cygwin7" ] && return 0 || return 1;;
-		(CYGWIN_NT-5) [ "${i}" = "cygwinxp" ] && return 0 || return 1;;
-		([L][l]inux) [ "${i}" = "linux" ] && return 0 || return 1;;
-		(Darwin*) [ "${i}" = "darwin" ] && return 0 || return 1;;
-		(*) [ "${i}" = "others" ] && return 0 || return 1;; 
+		(CYGWIN_NT-6.1*) [ "$1" = [Cc]ygwin7 ] && return 0 || return 1;;
+		(CYGWIN_NT-5*) [ "$1" = [Cc]ygwinxp ] && return 0 || return 1;;
+		([Ll]inux*) [[ "$1" = [Ll]inux ]] && return 0 || return 1;;
+		([Dd]arwin*) [ "$1" = [Dd]arwin ] && return 0 || return 1;;
+		(*) [ "$1" = [Oo]thers ] && return 0 || return 1;; 
 	esac
-	
-	return 0
 }
 
 ##
@@ -84,8 +77,8 @@ onos_ret(){
 #   $ onos_exec linux "htop" cygwin "echo not installed" linux "top"
 #   => subsequently executes htop and then top
 ##
-onos_exec(){
-	local command=$(onos "$@")
+sl-onos-exec(){
+	local command=$(sl-onos "$@")
 	eval "$command"
 	return 0
 }

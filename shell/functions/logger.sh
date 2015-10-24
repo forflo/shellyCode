@@ -4,30 +4,30 @@
 ##
 ####
 
-LOG_DATEOPTS="+%d.%h.%Y-%H:%M:%S"
-LOG_POPEN="["
-LOG_PCLOSE="]"
+SL_LOG_DATEOPTS="+%d.%h.%Y-%H:%M:%S"
+SL_LOG_POPEN="["
+SL_LOG_PCLOSE="]"
 
 ##
 # Variables for this module
 ##
-LOG_PROMPT=""
-LOG_PROMPT_FUNC="log_prompt"
+SL_LOG_PROMPT=""
+SL_LOG_PROMPT_FUNC="log_prompt"
 
-log_reset_prompt(){
+sl-log-reset(){
 	LOG_PROMPT_FUNC="log_prompt"
 }
 
-log_no_prompt(){
+sl-log-no-prompt(){
 	:
 }
 
-log_simple_prompt(){
+sl-log-simple-prompt(){
 	echo [log message:]" "
 }
 
-log_prompt(){
-	echo "$LOG_PROMPT"
+sl-log-prompt(){
+	echo "$SL_LOG_PROMPT"
 }
 
 ##
@@ -39,14 +39,14 @@ log_prompt(){
 #   0: on success
 #   1: on failure
 ##
-blog(){
+sl-blog(){
 	if [ "$#" -eq 0 ]; then
 		mapfile TEXT 
 		for ((i=0; i<${#TEXT[@]}; i++)); do
-			echo -n "$($LOG_PROMPT_FUNC)${TEXT[i]}"
+			echo -n "$($SL_LOG_PROMPT_FUNC)${TEXT[i]}"
 		done
 	else
-		echo "$($LOG_PROMPT_FUNC)$@"
+		echo "$($SL_LOG_PROMPT_FUNC)$@"
 	fi
 	return 0
 }
@@ -69,7 +69,7 @@ blog(){
 #   0: on success
 #   1: on fawithoutilure
 ##
-clog(){
+sl-clog(){
 	[ "$#" = "0" ] && {
 		is_int "$1" || {
 			echo You have to provide a color code
@@ -82,7 +82,7 @@ clog(){
 		# stdin is used as log message provider
 		if [ "$#" = 1 ]; then
 			# color code valid?
-			if [ "$1" -ge 0 -a "$1" -lt $TERM_COLORS ]; then
+			if [ "$1" -ge 0 -a "$1" -lt $SL_TERM_COLORS ]; then
 				mapfile TEXT
 				for ((i=0; i<${#TEXT[@]}; i++)); do
 					echo -n "$($LOG_PROMPT_FUNC)${TERM_COLORS_VALUES[$1]}${TEXT[i]}$TERM_RESET"
