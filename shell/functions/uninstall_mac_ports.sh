@@ -4,7 +4,7 @@ sl-uninstall-macports(){
 usage: sl-uninstall-macports
        => uninstalls the macports package from a
           os x system
-EOL	
+EOL
 		return 0
 	}
 

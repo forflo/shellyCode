@@ -35,14 +35,14 @@ for ((i=0; i<$SL_TERM_COLORS; i++)); do
 done
 
 #Formatting
-export TERM_BOLD=$(tput bold)
-export TERM_DIM=$(tput dim)
-export TERM_UNDERLINE=$(tput smul)
-export TERM_NEGATIVE=$(tput setab 7)
-export TERM_BLINK=$(tput blink)
+export SL_TERM_BOLD=$(tput bold)
+export SL_TERM_DIM=$(tput dim)
+export SL_TERM_UNDERLINE=$(tput smul)
+export SL_TERM_NEGATIVE=$(tput setab 7)
+export SL_TERM_BLINK=$(tput blink)
 
 #Special Functions
-export TERM_RESET=$(tput sgr0)
+export SL_TERM_RESET=$(tput sgr0)
 
 ##
 # Functions

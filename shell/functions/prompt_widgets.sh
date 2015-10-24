@@ -14,9 +14,9 @@ SL_LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
 #This behaviour is changeable
 ##
 
-declare -A SL_WIDGETS_STATUS
-declare -A SL_WIDGETS_NOTIFY
-declare -A SL_WIDGETS_SETDATA
+declare -Ag SL_WIDGETS_STATUS
+declare -Ag SL_WIDGETS_NOTIFY
+declare -Ag SL_WIDGETS_SETDATA
 
 # Name of widget => Name of widgets status array
 SL_WIDGETS_STATUS=(
@@ -56,16 +56,31 @@ sl-get-widgets(){
     local count=0
 
     for widget in ${!SL_WIDGETS_STATUS[*]}; do
-        local status_arr=${SL_WIDGETS_STATUS[widget]}
-        widget_index=$(eval "echo \${${status_arr}[\"index\"]}")
+        local widget_arr=${SL_WIDGETS_STATUS[$widget]}
+        local widget_index=$(eval "echo \${${widget_arr}[\"index\"]}")
 
-        widget_data[widget_index]=$(eval "echo \${${status_arr}[\"data\"]}") 
-        widget_foreground[widget_index]=$(eval "echo \${${status_arr}[\"foreground\"]}")
-        widget_background[widget_index]=$(eval "echo \${${status_arr}[\"background\"]}")
-        widget_enable[widget_index]=$(eval "echo \${${status_arr}[\"enable\"]}")
-        widget_delimiter[widget_index]=$(eval "echo \${${status_arr}[\"delimiter\"]}")  
- 
-        
+        local notify_func=${SL_WIDGETS_NOTIFY[$widget]}
+        local update_status=${SL_WIDGETS_SETDATA[$widget]}
+
+        ${update_status}
+
+        widget_data[widget_index]=$(eval "echo \${${widget_arr}[\"data\"]}") 
+        widget_foreground[widget_index]=$(eval "echo \${${widget_arr}[\"foreground\"]}")
+        widget_background[widget_index]=$(eval "echo \${${widget_arr}[\"background\"]}")
+        widget_enable[widget_index]=$(eval "echo \${${widget_arr}[\"enable\"]}")
+        widget_delimiter[widget_index]=$(eval "echo \${${widget_arr}[\"delimiter\"]}")  
+        widget_triggered[widget_index]=$(eval "echo \${${widget_arr}[\"triggered\"]}")
+        widget_del_fg[widget_index]=$(eval "echo \${${widget_arr}[\"del_foreground\"]}")
+        widget_del_bg[widget_index]=$(eval "echo \${${widget_arr}[\"del_background\"]}")
+        widget_del_fmt[widget_index]=$(eval "echo \${${widget_arr}[\"del_format\"]}")
+        widget_format[widget_index]=$(eval "echo \${${widget_arr}[\"format\"]}")
+         
+        if ${notify_func}; then
+            echo change!
+        else
+            echo nochange
+        fi
+        ${notify_func}
         widget_notify[widget_index]=$?
 
         ((count++))
@@ -73,13 +88,29 @@ sl-get-widgets(){
 
     for ((i=0; i<$count; i++)); do
         local d=${widget_data[i]} e=${widget_enable[i]} \
-              f=${widget_foreground[i]} b=${widget_background[i]} 
+              f=${widget_foreground[i]} b=${widget_background[i]} \
+              del=${widget_delimiter[i]} n=${widget_notify[i]} \
+              t=${widget_triggered[i]} del_fg=${widget_del_fg[i]} \
+              del_bg=${widget_del_bg[i]} del_fmt=${widget_del_fmt[i]} \
+              fmt=${widget_format[i]}
 
-        
+        local append="false"
+        local del_01="${del:0:1}"
+        local del_02="${del:1:1}"
+
+        ##
         # \[ and \] is used to mask the invisible chars as non existent for
         # lib readline. This is necessary, because otherwise readline
         # would incorrectly calculate the line length 
-        [ "$e" = "true" ] && widget_result+="$SL_DELIMITER\[$f\]\[$b\]\[$d\]\[$TERM_RESET\]"
+        echo triggered:$t notify=$n
+        [ "$e" = "true" -a "$t" = "false" ] && append="true"
+        [ "$e" = "true" -a "$t" = "true" ] && { [ "$n" = "0" ] && append="true" ; } 
+
+        [ $append = "true" ] && {
+            widget_result+="$SL_DELIMITER\[$del_fmt$del_fg$del_bg\]${del_01}\[$TERM_RESET\]"
+            widget_result+="\[$f$b$fmt\]$d\[$TERM_RESET\]"
+            widget_result+="\[$del_fmt$del_fg$del_bg\]${del_02}\[$TERM_RESET\]"
+        }
     done
 
     echo "$widget_result"
@@ -87,12 +118,6 @@ sl-get-widgets(){
 }
 
 sl-get-commands(){
-	local commands=""
-
-	for i in ${SL_WIDGETS_SETDATA[*]}; do
-		commands+="$i ; "	
-	done
-
-	echo $commands
+	echo "PS1=\$(sl-get-widgets)"
 	return 0
 }

@@ -17,8 +17,8 @@ SL_CROSS="┼"
 # Symbols
 ##
 SL_HEART="❤"
-SL_POWER01="⏚"
-SL_POWER02="⌁"
+SL_CHARGING="⏚"
+SL_DISCHARGING="⌁"
 SL_GIT="±"
 SL_MERC="☿"
 SL_SVN="‡"

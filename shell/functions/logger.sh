@@ -135,15 +135,15 @@ EOL
 		for i in $@; do
 			case "$i" in
 				(bold) 
-					format=${format}$TERM_BOLD ;;
+					format=${format}$SL_TERM_BOLD ;;
 				(blink) 
-					format=${format}$TERM_BLINK ;;
+					format=${format}$SL_TERM_BLINK ;;
 				(underline) 
-					format=${format}$TERM_UNDERLINE ;;
+					format=${format}$SL_TERM_UNDERLINE ;;
 				(dim) 
-					format=${format}$TERM_DIM ;;
+					format=${format}$SL_TERM_DIM ;;
 				(negative) 
-					format=${format}$TERM_NEGATIVE ;;
+					format=${format}$SL_TERM_NEGATIVE ;;
 				(*) 	
 					break ;;
 			esac

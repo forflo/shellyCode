@@ -3,22 +3,34 @@
 #Battery Power Widget for the widget library
 ##
 
-declare -Ag SL_WSTATUS_BAT
+P_WIDGET_01_INDEX=1 
+P_WIDGET_01_ENABLE=true
+P_WIDGET_01_FG=$FG_CYAN 
+P_WIDGET_01_BG= 
+P_WIDGET_01_DATA= # unnötig 
+OS=$(uname)
+FULL='o'
+EMPTY=' '
+RESOLUTION=15
+
+#Autor: Florian Mayer
+#Datum: 10.Sept.2013
+#Date widget for the widget library
+###
+
+declare -A SL_WSTATUS_BAT
 
 SL_WSTATUS_BAT=(
 	["index"]=1	
 	["enable"]=true
-	["foreground"]="$SL_FG_CYAN"
+	["foreground"]=""
 	["background"]=""
-    ["format"]=""
 	["data"]=""
 	["oldval"]=""
-    ["triggered"]="false" # only if sl-notify-bat returned 0
+    ["alwayson"]="true"
     ["delimiter"]="[]"
-    ["del_foreground"]="$SL_FG_GREEN"
-    ["del_background"]=""
-    ["del_format"]=""
 )
+
 
 ## 
 # returns 0 if something has changed
@@ -26,7 +38,6 @@ SL_WSTATUS_BAT=(
 sl-notify-bat(){
 	[ "${SL_WSTATUS_BAT[oldval]}" != "${SL_WSTATUS_BAT[data]}" ] && {
 		SL_WSTATUS_BAT["oldval"]=${SL_WSTATUS_BAT["data"]}		
-        echo bat:0
 		return 0
 	} || return 1
 }
@@ -79,8 +90,10 @@ sl-setdata-bat(){
 # returns 4 if no battery support
 # creates the sl-lp-battery function
 ##
-sl-onos-ret linux && {
-    sl-lp-battery() {
+case "$LP_OS" in
+    Linux)
+    sl-lp-battery()
+    {
         local acpi
         acpi="$(acpi --battery 2>/dev/null)"
         # Extract the battery load value in percent
@@ -117,10 +130,10 @@ sl-onos-ret linux && {
             fi
         fi
     }
-}
-
-sl-onos-ret darwin && {
-    sl-lp-battery() {
+    ;;
+    Darwin)
+    sl-lp-battery()
+    {
         [[ "$LP_ENABLE_BATT" != 1 ]] && return 4
         local pmset="$(pmset -g batt | sed -n -e '/InternalBattery/p')"
         local bat="$(cut -f2 <<<"$pmset")"
@@ -153,4 +166,5 @@ sl-onos-ret darwin && {
             ;;
         esac
     }
-}
+    ;;
+esac
