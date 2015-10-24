@@ -3,10 +3,10 @@
 #Date widget for the widget library
 ###
 
-declare -A SL_WSTATUS_DATE
+declare -Ag SL_WSTATUS_DATE
 
 SL_WSTATUS_DATE=(
-	["index"]=0	
+	["index"]="0"
 	["enable"]=true
 	["foreground"]=$FG_GREEN
 	["background"]=""
@@ -19,7 +19,7 @@ SL_WSTATUS_DATE=(
 # and 1 if not
 sl-notify-date(){
 	[ "${SL_WSTATUS_DATE[oldval]}" != "${SL_WSTATUS_DATE[data]}" ] && {
-		${SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
+		SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
 		return 0
 	} || return 1
 }

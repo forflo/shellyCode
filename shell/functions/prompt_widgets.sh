@@ -1,6 +1,7 @@
-SL_DELIMITER="|"
+SL_DELIMITER=" "
 SL_WIDGET_DIR=~/repos/git/shellyCode/shell/widgets
 SL_P_NULL="yes"
+SL_LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
 ##
 # LINE_BREAK specifies the number of widgets to show on one line
 # This variable can be set to any number greater than zero or
@@ -12,7 +13,6 @@ SL_P_NULL="yes"
 #Widget should not be seen if no useful information is available
 #This behaviour is changeable
 ##
-SL_LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
 
 declare -A SL_WIDGETS_STATUS
 declare -A SL_WIDGETS_NOTIFY
@@ -21,17 +21,20 @@ declare -A SL_WIDGETS_SETDATA
 # Name of widget => Name of widgets status array
 SL_WIDGETS_STATUS=(
 	["date.sh"]="SL_WSTATUS_DATE"
-	["git.sh"]="SL_WSTATUS_GIT"
+	#["git.sh"]="SL_WSTATUS_GIT"
+	["bat.sh"]="SL_WSTATUS_BAT"
 )
 
 SL_WIDGETS_NOTIFY=(
 	["date.sh"]="sl-notify-date"
-	["git.sh"]="sl-notify-git"
+	#["git.sh"]="sl-notify-git"
+	["bat.sh"]="sl-notify-bat"
 )
 
 SL_WIDGETS_SETDATA=(
 	["date.sh"]="sl-setdata-date"
-	["git.sh"]="sl-setdata-git"
+	#["git.sh"]="sl-setdata-git"
+	["bat.sh"]="sl-setdata-bat"
 )
 
 sl-load-widgets(){
@@ -43,46 +46,51 @@ sl-load-widgets(){
 	return 0
 }
 
-sl-run-widgets(){
-	
-}
+sl-get-widgets(){
+    local widget_result=""
+    local widget_data=()
+    local widget_enable=()
+    local widget_foreground=()
+    local widget_background=()
+    local widget_delimiter=()
+    local count=0
 
-sl-get-prompt-additions(){
-	cd $WIDGET_DIR ; local result="$DELIMITER" ; local count=0 ; local current_space=2
-	for i in p_widget_*; do
-		local temp=$(upper $i)_ENABLE
-		local temp2=$(upper $i)_DATA
-		if [ "${!temp}" = true -a -n "${temp2}" ]; then
-			if [ "$LINE_BREAK" != auto ]; then
-				if [ $((count++%LINE_BREAK)) = 0 ]; then
-					result="$result""\n$TL$HL"
-				fi
-				result="$result"'\[${'$(upper $i)_FG'}\]\[${'$(upper $i)_BG'}\]\[${'$(upper $i)_DATA'}\]\['${TERM_RESET}'\]'"$DELIMITER"
-			else
-				if [ $count -eq 0 ]; then
-					result="$result""\n$TL$HL"
-					((count++))
-				fi
-				#local space=$COLUMNS
-				local space=$(tput cols)
-				local t=$(echo -n "${!temp2}" | wc -c)
-				((current_space+=t+1))
-				if [ $current_space -gt $space ]; then
-					((current_space=t+2))
-					result="$result""\n$TL$HL"
-				fi
-				result="$result"'\[${'$(upper $i)_FG'}\]\[${'$(upper $i)_BG'}\]\[${'$(upper $i)_DATA'}\]\['${TERM_RESET}'\]'"$DELIMITER"
-			fi
-		fi
-	done
-	echo "$result""\n$BLC$HL$HL" ; cd $OLDPWD
+    for widget in ${!SL_WIDGETS_STATUS[*]}; do
+        local status_arr=${SL_WIDGETS_STATUS[widget]}
+        widget_index=$(eval "echo \${${status_arr}[\"index\"]}")
+
+        widget_data[widget_index]=$(eval "echo \${${status_arr}[\"data\"]}") 
+        widget_foreground[widget_index]=$(eval "echo \${${status_arr}[\"foreground\"]}")
+        widget_background[widget_index]=$(eval "echo \${${status_arr}[\"background\"]}")
+        widget_enable[widget_index]=$(eval "echo \${${status_arr}[\"enable\"]}")
+        widget_delimiter[widget_index]=$(eval "echo \${${status_arr}[\"delimiter\"]}")  
+ 
+        
+        widget_notify[widget_index]=$?
+
+        ((count++))
+    done
+
+    for ((i=0; i<$count; i++)); do
+        local d=${widget_data[i]} e=${widget_enable[i]} \
+              f=${widget_foreground[i]} b=${widget_background[i]} 
+
+        
+        # \[ and \] is used to mask the invisible chars as non existent for
+        # lib readline. This is necessary, because otherwise readline
+        # would incorrectly calculate the line length 
+        [ "$e" = "true" ] && widget_result+="$SL_DELIMITER\[$f\]\[$b\]\[$d\]\[$TERM_RESET\]"
+    done
+
+    echo "$widget_result"
+    return 0
 }
 
 sl-get-commands(){
 	local commands=""
 
 	for i in ${SL_WIDGETS_SETDATA[*]}; do
-		result+="$i ;"	
+		commands+="$i ; "	
 	done
 
 	echo $commands

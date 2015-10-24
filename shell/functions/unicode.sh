@@ -17,6 +17,13 @@ SL_CROSS="┼"
 # Symbols
 ##
 SL_HEART="❤"
+SL_POWER01="⏚"
+SL_POWER02="⌁"
+SL_GIT="±"
+SL_MERC="☿"
+SL_SVN="‡"
+SL_FOSSIL="⌘"
+SL_MICRO="µ"
 
 ##
 # This is used for compatibility
@@ -33,6 +40,8 @@ sl-set-ascii-mode(){
 	SL_TB="+"
 	SL_TT="+"
 	SL_CROSS="+"
+    SL_POWER01="p"
+    SL_POWER02="p"
 
 	##
 	# Symbols
