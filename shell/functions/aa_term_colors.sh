@@ -26,10 +26,10 @@ export SL_BG_ARR=(SL_BG_BLACK SL_BG_RED SL_BG_GREEN SL_BG_YELLOW SL_BG_BLUE \
                 SL_BG_PURPLE SL_BG_CYAN SL_BG_WHITE)
 
 #Extended Color-Values
-export TERM_COLORS=$(tput colors)
-export TERM_COLORS_VALUES=
-for ((i=0; i<$TERM_COLORS; i++)); do
-	TERM_COLORS_VALUES[i]="$(tput setaf $i)" # innerhalb von [] müssen variablen nicth
+export SL_TERM_COLORS=$(tput colors)
+export SL_TERM_COLORS_VALUES=
+for ((i=0; i<$SL_TERM_COLORS; i++)); do
+	SL_TERM_COLORS_VALUES[i]="$(tput setaf $i)" # innerhalb von [] müssen variablen nicth
 						 # mit $ gekennzeichnet werden, da es sich
 						 # hier um einen arithmetischen ausdruck handelt!
 done
@@ -48,7 +48,7 @@ export TERM_RESET=$(tput sgr0)
 # Functions
 ##
 sl-random-color(){
-	colorname=${FG_ARR[$(sl-random-simple 8)]}
+	local colorname=${FG_ARR[$(sl-random-simple 8)]}
 	echo -n ${!colorname}
 }
 

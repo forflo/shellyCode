@@ -2,13 +2,20 @@
 # Evaluate with a custom temporary umask
 ##
 # Param:
-#   $1: umaks
+#   $1: umask
 #   $2: command
 # Return: 
 # Return value of the command
 #   1 if wrong parameters were given
 ##
-do_permcustom(){
+sl-permcustom(){
+	if [ "$1" = "--help" -o "$1" = "-h" ]; then
+		cat << EOL
+usage: sl-permcustom <temporary-umask> <command>
+EOL
+		return 0
+	fi
+
 	local res
 	umask "$1"
 	shift
@@ -16,16 +23,7 @@ do_permcustom(){
 	result=$?
 	#UMASK_STD is set by the environment
 	umask ${UMASK_STD}
-	return $res
-}
 
-do_permcustom_sudo(){
-	local res
-	umask "$1"
-	shift
-	sudo "$@"
-	result=$?
-	umask ${UMASK_STD}
 	return $res
 }
 
@@ -35,12 +33,18 @@ do_permcustom_sudo(){
 ##
 # Param:
 #   $1: timeout in sec
-#   $2: contition command(s)
+#   $2: condition command(s)
 # Return:
 #   1 if the timeout occured or
 #   0 if the command executed successfully
 ##
-timeout_wait(){
+sl-timeout-wait(){
+	if [ "$1" = "--help" -o "$1" = "-h" ]; then
+		cat << EOL
+usage: sl-timeout-wait <timeout-in-sec> <condition commands>
+EOL
+	fi
+
 	local timeout=${1}
 	(( timeout *= 5 ))
 	shift
@@ -50,4 +54,3 @@ timeout_wait(){
 	done
 	return 0
 }
-
