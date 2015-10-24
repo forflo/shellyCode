@@ -3,10 +3,9 @@
 ## 
 sl-env-reinstall(){
 	if [ "$1" = "--help" -o "$1" = "-h" ]; then
-		cat EOL <<
+		cat << EOL
 usage: sl-env-reinstall 
 summary: reinstalls the complete environment
-
 EOL
 	fi
 	

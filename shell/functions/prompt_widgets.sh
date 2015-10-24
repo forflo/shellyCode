@@ -1,6 +1,6 @@
-DELIMITER="|"
-WIDGET_DIR=~/repos/git/shellyCode/shell/widgets/
-P_NULL="yes"
+SL_DELIMITER="|"
+SL_WIDGET_DIR=~/repos/git/shellyCode/shell/widgets
+SL_P_NULL="yes"
 ##
 # LINE_BREAK specifies the number of widgets to show on one line
 # This variable can be set to any number greater than zero or
@@ -12,15 +12,42 @@ P_NULL="yes"
 #Widget should not be seen if no useful information is available
 #This behaviour is changeable
 ##
-LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
+SL_LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
 
-for i in $WIDGET_DIR/p_widget_*; do
-	echo Loading widget $i ...
-	. "$i"
-	eval $(basename $i)
-done
+declare -A SL_WIDGETS_STATUS
+declare -A SL_WIDGETS_NOTIFY
+declare -A SL_WIDGETS_SETDATA
 
-get_prompt_additions(){
+# Name of widget => Name of widgets status array
+SL_WIDGETS_STATUS=(
+	["date.sh"]="SL_WSTATUS_DATE"
+	["git.sh"]="SL_WSTATUS_GIT"
+)
+
+SL_WIDGETS_NOTIFY=(
+	["date.sh"]="sl-notify-date"
+	["git.sh"]="sl-notify-git"
+)
+
+SL_WIDGETS_SETDATA=(
+	["date.sh"]="sl-setdata-date"
+	["git.sh"]="sl-setdata-git"
+)
+
+sl-load-widgets(){
+	for i in ${!SL_WIDGETS_STATUS[*]}; do
+		echo Loading Widget $i
+		. ${SL_WIDGET_DIR}/${i}
+	done
+
+	return 0
+}
+
+sl-run-widgets(){
+	
+}
+
+sl-get-prompt-additions(){
 	cd $WIDGET_DIR ; local result="$DELIMITER" ; local count=0 ; local current_space=2
 	for i in p_widget_*; do
 		local temp=$(upper $i)_ENABLE
@@ -51,12 +78,13 @@ get_prompt_additions(){
 	echo "$result""\n$BLC$HL$HL" ; cd $OLDPWD
 }
 
-get_prompt_commands(){
-	cd $WIDGET_DIR ;local result=
-	for i in *; do
-		result="$result""$i"' ; '
-	done
-	echo "$result"
-	cd $OLDPWD
-}
+sl-get-commands(){
+	local commands=""
 
+	for i in ${SL_WIDGETS_SETDATA[*]}; do
+		result+="$i ;"	
+	done
+
+	echo $commands
+	return 0
+}
