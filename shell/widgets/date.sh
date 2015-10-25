@@ -25,12 +25,7 @@ SL_WSTATUS_DATE=(
 # and 1 if not
 sl-notify-date(){
     [ "${SL_WSTATUS_DATE["oldval"]}" != "${SL_WSTATUS_DATE["data"]}" ] && {
-    	echo data:${SL_WSTATUS_DATE["data"]}		
-    	echo oldval:${SL_WSTATUS_DATE["oldval"]}
     	SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
-        
-        SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}
-         echo data:0
     	return 0
     } || return 1
 }

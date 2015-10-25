@@ -60,9 +60,6 @@ sl-get-widgets(){
         local widget_index=$(eval "echo \${${widget_arr}[\"index\"]}")
 
         local notify_func=${SL_WIDGETS_NOTIFY[$widget]}
-        local update_status=${SL_WIDGETS_SETDATA[$widget]}
-
-        ${update_status}
 
         widget_data[widget_index]=$(eval "echo \${${widget_arr}[\"data\"]}") 
         widget_foreground[widget_index]=$(eval "echo \${${widget_arr}[\"foreground\"]}")
@@ -74,14 +71,9 @@ sl-get-widgets(){
         widget_del_bg[widget_index]=$(eval "echo \${${widget_arr}[\"del_background\"]}")
         widget_del_fmt[widget_index]=$(eval "echo \${${widget_arr}[\"del_format\"]}")
         widget_format[widget_index]=$(eval "echo \${${widget_arr}[\"format\"]}")
-         
-        if ${notify_func}; then
-            echo change!
-        else
-            echo nochange
-        fi
+ 
         ${notify_func}
-        widget_notify[widget_index]=$?
+        widget_notify[widget_index]="$?"
 
         ((count++))
     done
@@ -102,14 +94,14 @@ sl-get-widgets(){
         # \[ and \] is used to mask the invisible chars as non existent for
         # lib readline. This is necessary, because otherwise readline
         # would incorrectly calculate the line length 
-        echo triggered:$t notify=$n
+        # echo triggered:$t notify=$n data=$d
         [ "$e" = "true" -a "$t" = "false" ] && append="true"
-        [ "$e" = "true" -a "$t" = "true" ] && { [ "$n" = "0" ] && append="true" ; } 
+        [ "$e" = "true" -a "$t" = "true" -a "$n" = "0" ] && append="true"
 
         [ $append = "true" ] && {
-            widget_result+="$SL_DELIMITER\[$del_fmt$del_fg$del_bg\]${del_01}\[$TERM_RESET\]"
-            widget_result+="\[$f$b$fmt\]$d\[$TERM_RESET\]"
-            widget_result+="\[$del_fmt$del_fg$del_bg\]${del_02}\[$TERM_RESET\]"
+            widget_result+="$SL_DELIMITER\[$del_fmt$del_fg$del_bg\]${del_01}\[$SL_TERM_RESET\]"
+            widget_result+="\[$f$b$fmt\]$d\[$SL_TERM_RESET\]"
+            widget_result+="\[$del_fmt$del_fg$del_bg\]${del_02}\[$SL_TERM_RESET\]"
         }
     done
 

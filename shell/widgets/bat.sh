@@ -26,7 +26,6 @@ SL_WSTATUS_BAT=(
 sl-notify-bat(){
 	[ "${SL_WSTATUS_BAT[oldval]}" != "${SL_WSTATUS_BAT[data]}" ] && {
 		SL_WSTATUS_BAT["oldval"]=${SL_WSTATUS_BAT["data"]}		
-        echo bat:0
 		return 0
 	} || return 1
 }
@@ -121,7 +120,6 @@ sl-onos-ret linux && {
 
 sl-onos-ret darwin && {
     sl-lp-battery() {
-        [[ "$LP_ENABLE_BATT" != 1 ]] && return 4
         local pmset="$(pmset -g batt | sed -n -e '/InternalBattery/p')"
         local bat="$(cut -f2 <<<"$pmset")"
         bat="${bat%%%*}"

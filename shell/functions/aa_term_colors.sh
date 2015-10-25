@@ -48,14 +48,14 @@ export SL_TERM_RESET=$(tput sgr0)
 # Functions
 ##
 sl-random-color(){
-	local colorname=${FG_ARR[$(sl-random-simple 8)]}
+	local colorname=${SL_FG_ARR[$(sl-random-simple 8)]}
 	echo -n ${!colorname}
 }
 
 sl-random-color-extended(){
-	echo -n "${TERM_COLORS_VALUES[$(sl-random-simple 255)]}"
+	echo -n "${SL_TERM_COLORS_VALUES[$(sl-random-simple 255)]}"
 }
 
 sl-term_reset(){
-	echo -n $TERM_RESET
+	echo -n $SL_TERM_RESET
 }

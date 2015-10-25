@@ -60,10 +60,10 @@ sl-onos(){
 ##
 sl-onos-ret(){
 	case "$(uname -a)" in
-		(CYGWIN_NT-6.1*) [ "$1" = [Cc]ygwin7 ] && return 0 || return 1;;
-		(CYGWIN_NT-5*) [ "$1" = [Cc]ygwinxp ] && return 0 || return 1;;
+		(CYGWIN_NT-6.1*) [[ "$1" = [Cc]ygwin7 ]] && return 0 || return 1;;
+		(CYGWIN_NT-5*) [[ "$1" = [Cc]ygwinxp ]] && return 0 || return 1;;
 		([Ll]inux*) [[ "$1" = [Ll]inux ]] && return 0 || return 1;;
-		([Dd]arwin*) [ "$1" = [Dd]arwin ] && return 0 || return 1;;
+		([Dd]arwin*) [[ "$1" = [Dd]arwin ]] && return 0 || return 1;;
 		(*) [ "$1" = [Oo]thers ] && return 0 || return 1;; 
 	esac
 }
