@@ -13,22 +13,22 @@ SL_WSTATUS_DATE=(
     ["del_foreground"]="" # color the delimiter should have
     ["del_background"]="" # color the delimiter should have
     ["del_format"]="" 
+    ["trigger"]="false" # set to true if data and oldval changed
 )
 
 ## 
 # returns 0 if something has changed
 # and 1 if not
 sl-notify-date(){
-	[ "${SL_WSTATUS_DATE[oldval]}" != "${SL_WSTATUS_DATE[data]}" ] && {
-		SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
-		return 0
-	} || return 1
+    [ "${SL_WSTATUS_DATE["oldval"]}" != "${SL_WSTATUS_DATE["data"]}" ] && {
+    	SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
+        SL_WSTATUS_DATE["trigger"]=true
+    } || SL_WSTATUS_DATE["trigger"]=false
 }
 
 ##
 # sets the string for this widget
 sl-setdata-date(){
-	SL_WSTATUS_DATE["data"]=#<yourpart!!!>
-
+	SL_WSTATUS_DATE["data"]=""
 	return 0
 }

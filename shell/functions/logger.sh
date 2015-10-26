@@ -69,7 +69,7 @@ EOL
 			if [ "$1" -ge 0 -a "$1" -lt $SL_TERM_COLORS ]; then
 				mapfile text
 				for ((i=0; i<${#text[@]}; i++)); do
-					echo -n "${SL_TERM_COLORS_VALUES[$1]}${text[i]}$TERM_RESET"
+					echo -n "${SL_TERM_COLORS_VALUES[$1]}${text[i]}$SL_TERM_RESET"
 				done
 				return 0
 			else
@@ -78,7 +78,7 @@ EOL
 			fi
 		elif [ "$#" -gt 1 ]; then
 			local colorcode=$1; shift 1
-			echo "${SL_TERM_COLORS_VALUES[${colorcode}]}${@}$TERM_RESET"
+			echo "${SL_TERM_COLORS_VALUES[${colorcode}]}${@}$SL_TERM_RESET"
 		fi
 	else
 		shift 1
@@ -119,6 +119,7 @@ EOL
 	}
 	
 	local color="${SL_TERM_COLORS_VALUES[$1]}"
+    local inpipe="false"
 	local format=""
 	local count=0
 
@@ -134,18 +135,13 @@ EOL
 		# parse format codes, no error detection 
 		for i in $@; do
 			case "$i" in
-				(bold) 
-					format=${format}$SL_TERM_BOLD ;;
-				(blink) 
-					format=${format}$SL_TERM_BLINK ;;
-				(underline) 
-					format=${format}$SL_TERM_UNDERLINE ;;
-				(dim) 
-					format=${format}$SL_TERM_DIM ;;
-				(negative) 
-					format=${format}$SL_TERM_NEGATIVE ;;
-				(*) 	
-					break ;;
+				(bold) format=$SL_TERM_BOLD ;;
+				(blink) format=$SL_TERM_BLINK ;;
+				(underline) format=$SL_TERM_UNDERLINE ;;
+				(dim) format=$SL_TERM_DIM ;;
+				(negative) format=$SL_TERM_NEGATIVE ;;
+                (inpipe) inpipe="true" ;;
+				(*)	break ;;
 			esac
 			((count++))
 		done
@@ -153,16 +149,16 @@ EOL
 	fi
 
 	# only color sequences if stdin outputs to a terminal
-	if [ -t 1 ]; then 
+	if [ -t 1 -o "$inpipe" = "true" ]; then 
 		if [ "$#" = 0 ]; then
 			# take arguments from stdin
 			mapfile text
 			for ((i=0; i<${#text[@]}; i++)); do
-				echo -n "${color}${format}${text[i]}$TERM_RESET"
+				echo -n "${color}${format}${text[i]}$SL_TERM_RESET"
 			done
 		elif [ "$#" -gt 0 ]; then
 			# take arguments from $3 - $#
-			echo "${format}${color}${@}$TERM_RESET"
+			echo "${format}${color}${@}$SL_TERM_RESET"
 		else
 			echo Sie müssen einen Farbcode und einen Formatcode angeben >&2 
 			return 1
@@ -174,18 +170,23 @@ EOL
 	return 0
 }
 
-sl-qlog 4 bold blink underline "foobar @{foobar fooobare}"
-
-##
-# sl-qlog <color_code> {<format_codes>} {<formated strings>}
-##
-sl-qlog(){
-:
-}
-
+# logs a string 
 sl-rlog(){
+	[ "$1" = "--help" -o "$1" = "-h" ] && {
+		cat << EOL
+usage: sl-rlog <tput-color-code> <formatcode_1> ... <formatcode_i> <regex>
+               <string> ... <string_n>
+       => writes colorized and formated strings matching regex to stdout
+
+       <command> | sl-clog <tput-color-code> <formatcode_1> ... <formatcode_i>
+       => colorizes and formats everything coming from stdin
+EOL
+		return 0	
+	}
+
 	local color="${SL_TERM_COLORS_VALUES[$1]}"
 	local format=""
+    local inpipe="false"
 	local regex=""
 	local count=0
 
@@ -201,16 +202,12 @@ sl-rlog(){
 		# parse format codes, no error detection 
 		for i in $@; do
 			case "$i" in
-				(bold) 
-					format=${format}$TERM_BOLD ;;
-				(blink) 
-					format=${format}$TERM_BLINK ;;
-				(underline) 
-					format=${format}$TERM_UNDERLINE ;;
-				(dim) 
-					format=${format}$TERM_DIM ;;
-				(negative) 
-					format=${format}$TERM_NEGATIVE ;;
+				(bold) format+=$SL_TERM_BOLD ;;
+				(blink) format+=$SL_TERM_BLINK ;;
+				(underline) format+=$SL_TERM_UNDERLINE ;;
+				(dim) format+=$SL_TERM_DIM ;;
+				(negative) format+=$SL_TERM_NEGATIVE ;;
+                (inpipe) inpipe="true" ;;
 				(*) 	
 					break ;;
 			esac
@@ -223,13 +220,13 @@ sl-rlog(){
 	shift 1
 
 	# only color sequences if stdin outputs to a terminal
-	if [ -t 1 ]; then 
+	if [ -t 1 -o "$inpipe" = "true" ]; then 
 		if [ "$#" = 0 ]; then
 			# take arguments from stdin
-			sed -e "s/\($regex\)/${format}${color}\1$TERM_RESET/g" 
+			sed -e "s/\($regex\)/${format}${color}\1$SL_TERM_RESET/g" 
 		elif [ "$#" -gt 0 ]; then
 			# take arguments from $3 - $#
-			echo "$@" | sed -e "s/\($regex\)/${format}${color}\1$TERM_RESET/g" 
+			echo "$@" | sed -e "s/\($regex\)/${format}${color}\1$SL_TERM_RESET/g" 
 		else
 			echo You have to provide a valide color code!
 			return 1

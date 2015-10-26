@@ -3,6 +3,7 @@
 #Battery Power Widget for the widget library
 ##
 
+SL_BATTERY_THRESHOLD="60"
 declare -Ag SL_WSTATUS_BAT
 
 SL_WSTATUS_BAT=(
@@ -33,8 +34,9 @@ sl-notify-bat(){
 ##
 # sets the string for this widget
 sl-setdata-bat(){
-    local percent=$(sl-lp-battery)
+    sl-lp-battery > /dev/null
     local ret=$?
+    local percent=$(sl-lp-battery)
 
     [ $ret = 4 ] && {
 	    SL_WSTATUS_BAT["enable"]=false
@@ -49,7 +51,7 @@ sl-setdata-bat(){
     [ $ret = 2 ] && {
         SL_WSTATUS_BAT["enable"]=true
         SL_WSTATUS_BAT["data"]="$SL_CHARGING${percent}%"
-        SL_WSTATUS_BAT["foreground"]=$SL_FG_YELLOW
+        SL_WSTATUS_BAT["foreground"]=$SL_FG_RED
     }
 
     [ $ret = 1 ] && {
@@ -61,7 +63,7 @@ sl-setdata-bat(){
     [ $ret = 0 ] && {
         SL_WSTATUS_BAT["enable"]=true
         SL_WSTATUS_BAT["data"]="$SL_DISCHARGING${percent}%"
-        SL_WSTATUS_BAT["foreground"]=$SL_FG_YELLOW
+        SL_WSTATUS_BAT["foreground"]=$SL_FG_RED
     }
 
 	return 0
@@ -78,6 +80,7 @@ sl-setdata-bat(){
 # returns 4 if no battery support
 # creates the sl-lp-battery function
 ##
+
 sl-onos-ret linux && {
     sl-lp-battery() {
         local acpi
@@ -93,7 +96,7 @@ sl-onos-ret linux && {
 
         # discharging
         elif [[ "$acpi" == *"Discharging"* ]] ; then
-            if [[ ${bat} -le $LP_BATTERY_THRESHOLD ]] ; then
+            if [[ ${bat} -le $SL_BATTERY_THRESHOLD ]] ; then
                 # under threshold
                 echo -n "${bat}"
                 return 0
@@ -105,7 +108,7 @@ sl-onos-ret linux && {
 
         # charging
         else
-            if [[ ${bat} -le $LP_BATTERY_THRESHOLD ]] ; then
+            if [[ ${bat} -le $SL_BATTERY_THRESHOLD ]] ; then
                 # under threshold
                 echo -n "${bat}"
                 return 2
@@ -128,7 +131,7 @@ sl-onos-ret darwin && {
             return 4
             ;;
             *discharging*)
-            if [[ ${bat} -le $LP_BATTERY_THRESHOLD ]] ; then
+            if [[ ${bat} -le $SL_BATTERY_THRESHOLD ]] ; then
                 # under threshold
                 echo -n "${bat}"
                 return 0
@@ -139,7 +142,7 @@ sl-onos-ret darwin && {
             fi
             ;;
             *)
-            if [[ ${bat} -le $LP_BATTERY_THRESHOLD ]] ; then
+            if [[ ${bat} -le $SL_BATTERY_THRESHOLD ]] ; then
                 # under threshold
                 echo -n "${bat}"
                 return 2

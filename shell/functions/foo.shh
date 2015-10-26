@@ -1,9 +1,0 @@
-for i in *.sh; do
-	echo $i
-	. $i
-done
-
-. ../widgets/date.sh
-. ../widgets/bat.sh
-
-sl-load-widgets

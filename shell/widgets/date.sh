@@ -8,16 +8,17 @@ declare -Ag SL_WSTATUS_DATE
 SL_WSTATUS_DATE=(
 	["index"]="0"
 	["enable"]=true
-	["foreground"]=$SL_FG_BLACK
-	["background"]="$SL_BG_BLUE"
+	["foreground"]=$SL_TERM_WHITE
+	["background"]=""
     ["format"]="$SL_TERM_BOLD"
 	["data"]=""
 	["oldval"]=""
     ["triggered"]="true" # only show if sl-notify-date returned 0
     ["delimiter"]="{}"
-    ["del_background"]="$SL_BG_YELLOW"
-    ["del_foreground"]="$SL_FG_BLUE"
-    ["del_format"]="$SL_TERM_UNDERLINE"
+    ["del_background"]=""
+    ["del_foreground"]=""
+    ["del_format"]=""
+    ["trigger"]="false"
 )
 
 ## 
@@ -26,8 +27,10 @@ SL_WSTATUS_DATE=(
 sl-notify-date(){
     [ "${SL_WSTATUS_DATE["oldval"]}" != "${SL_WSTATUS_DATE["data"]}" ] && {
     	SL_WSTATUS_DATE["oldval"]=${SL_WSTATUS_DATE["data"]}		
-    	return 0
-    } || return 1
+        SL_WSTATUS_DATE["trigger"]=true
+    } || SL_WSTATUS_DATE["trigger"]=false
+
+    return 0
 }
 
 ##

@@ -1,4 +1,4 @@
-SL_DELIMITER=" "
+SL_DELIMITER="$SL_HL"
 SL_WIDGET_DIR=~/repos/git/shellyCode/shell/widgets
 SL_P_NULL="yes"
 SL_LINE_BREAK="auto" # specifies the number of widgets a linefeed should follow
@@ -46,6 +46,36 @@ sl-load-widgets(){
 	return 0
 }
 
+sl-print-notify(){
+    for widget in ${!SL_WIDGETS_STATUS[*]}; do
+        local widget_arr=${SL_WIDGETS_STATUS[$widget]}
+        
+        echo $(eval "echo \${${widget_arr}[\"data\"]}") 
+        echo $(eval "echo \${${widget_arr}[\"oldval\"]}") 
+
+    done
+}
+
+sl-update-widgets(){
+    for widget in ${!SL_WIDGETS_STATUS[*]}; do
+        local update_func=${SL_WIDGETS_SETDATA[$widget]}
+        local notify_func=${SL_WIDGETS_NOTIFY[$widget]}
+
+        ${update_func}
+        ${notify_func}
+    done
+
+    return 0
+}
+
+sl-get-prompt(){
+    local begin="$SL_TLC"
+    local widgets="$(sl-get-widgets)"
+    local end="$SL_BLC"
+    
+    echo "$begin$widgets\n$end"
+}
+
 sl-get-widgets(){
     local widget_result=""
     local widget_data=()
@@ -53,13 +83,18 @@ sl-get-widgets(){
     local widget_foreground=()
     local widget_background=()
     local widget_delimiter=()
+    local widget_triggered=()
+    local widget_notify=()
+    local widget_del_fg=()
+    local widget_del_bg=()
+    local widget_del_fmt=()
+    local widget_format=()
+    local widget_trigger=()
     local count=0
 
     for widget in ${!SL_WIDGETS_STATUS[*]}; do
         local widget_arr=${SL_WIDGETS_STATUS[$widget]}
         local widget_index=$(eval "echo \${${widget_arr}[\"index\"]}")
-
-        local notify_func=${SL_WIDGETS_NOTIFY[$widget]}
 
         widget_data[widget_index]=$(eval "echo \${${widget_arr}[\"data\"]}") 
         widget_foreground[widget_index]=$(eval "echo \${${widget_arr}[\"foreground\"]}")
@@ -70,10 +105,8 @@ sl-get-widgets(){
         widget_del_fg[widget_index]=$(eval "echo \${${widget_arr}[\"del_foreground\"]}")
         widget_del_bg[widget_index]=$(eval "echo \${${widget_arr}[\"del_background\"]}")
         widget_del_fmt[widget_index]=$(eval "echo \${${widget_arr}[\"del_format\"]}")
+        widget_trigger[widget_index]=$(eval "echo \${${widget_arr}[\"trigger\"]}")
         widget_format[widget_index]=$(eval "echo \${${widget_arr}[\"format\"]}")
- 
-        ${notify_func}
-        widget_notify[widget_index]="$?"
 
         ((count++))
     done
@@ -81,7 +114,7 @@ sl-get-widgets(){
     for ((i=0; i<$count; i++)); do
         local d=${widget_data[i]} e=${widget_enable[i]} \
               f=${widget_foreground[i]} b=${widget_background[i]} \
-              del=${widget_delimiter[i]} n=${widget_notify[i]} \
+              del=${widget_delimiter[i]} trigger=${widget_trigger[i]} \
               t=${widget_triggered[i]} del_fg=${widget_del_fg[i]} \
               del_bg=${widget_del_bg[i]} del_fmt=${widget_del_fmt[i]} \
               fmt=${widget_format[i]}
@@ -96,7 +129,7 @@ sl-get-widgets(){
         # would incorrectly calculate the line length 
         # echo triggered:$t notify=$n data=$d
         [ "$e" = "true" -a "$t" = "false" ] && append="true"
-        [ "$e" = "true" -a "$t" = "true" -a "$n" = "0" ] && append="true"
+        [ "$e" = "true" -a "$t" = "true" -a "$trigger" = "true" ] && append="true"
 
         [ $append = "true" ] && {
             widget_result+="$SL_DELIMITER\[$del_fmt$del_fg$del_bg\]${del_01}\[$SL_TERM_RESET\]"
@@ -109,7 +142,8 @@ sl-get-widgets(){
     return 0
 }
 
-sl-get-commands(){
-	echo "PS1=\$(sl-get-widgets)"
-	return 0
+sl-get-pc(){
+    echo 'sl-update-widgets ; PS1=$(sl-get-prompt)'
 }
+
+sl-load-widgets
