@@ -1,0 +1,92 @@
+#!/bin/bash
+# Sourcing the used functions
+SL_SHELLY=~"/repos/git/shellyCode/zshcode/functions"
+
+echo "[~/.profile] Sourcing initial Variables"
+. ~/.environment.conf
+for i in $SL_SHELLY/*; do
+    . $i 
+done
+
+##
+# Prompt configuration
+PROMPT_COMMAND="$(sl-get-pc)"
+SL_SMALL="\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\u\[${TERM_RESET}\]@\\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\h\[${TERM_RESET}\]${DELIMITER}\s\V on \l${DELIMITER}Jobs: \j${DELIMITER}dir: \w"
+SL_TINY="$>> "
+
+## 
+# Loginscreen
+sl-title_screen(){
+    local title=""
+
+    while read i; do
+       echo $i | \
+          sl-rlog 6 inpipe "Sourcing\\|[0-9a-z_]*\\.zsh\\|shellyZsh" | \
+          sl-rlog 8 inpipe "home\\/florian\\|\\/shell" | \
+          sl-rlog 7 inpipe "repos\\/git\\|functions" | \
+          sl-rlog 5 dim "\\.\\.\\." 
+    done < <(
+        for i in $SL_SHELLY/*; do
+    	    echo Sourcing $i ...
+        done
+    )
+
+    sl-onos-exec \
+        cygwin7 "figlet -f script wetL?!" \
+        cygwinxp "figlet -f script wetL?!" \
+        linux "echo fuck! | cowsay -e o0 -n | cowthink -e 00 -n | cowthink -e -- -n | sl-flog 5 dim"
+        
+	echo -e "\n"$SL_TERM_RESET
+}
+
+##
+# Führt ein bestimmtes Kommando n mal aus
+# $1: Zahl der wiederholungen
+sl-dotimes(){
+	T_QUOTE="@"
+	HELP='usage: $0 <number of repeats> [-i] <commandstring> 
+(<number of repeats> can be a positive number or the ~ symbol for infinite loops)'
+	cnt=$1
+	if [ "$2" = "-i" ]; then
+		shift 2
+		for ((i=0;i<$cnt;i++)); do
+			command=$(echo $@ | sed "s/${T_QUOTE}i/$i/g")
+			eval "$command"
+		done
+	elif [[ "$1" == --[Hh][Ee][Ll][Pp] ]] || (($#==0)) ; then
+		echo "$HELP"	
+	elif [[ "$1" == '~' ]]; then
+		shift 1;
+		while :; do
+			eval $@
+		done
+	else
+		shift 1
+		for ((i=0;i<$cnt;i++)); do
+			eval $@ 
+		done
+	fi
+}
+
+#change the PS1
+sl-smallprompt(){
+	PROMPT_COMMAND=""
+	PS1="$SL_SMALL"
+}
+
+sl-tinyprompt(){
+	PROMPT_COMMAND=""
+	PS1="$SL_TINY"
+}
+
+sl-bigprompt(){
+    PROMPT_COMMAND="$(sl-get-pc)"
+}
+
+sl-list-spaces(){
+	for i in *; do 
+		du -hs "$i"
+	done
+}
+
+sl-title_screen

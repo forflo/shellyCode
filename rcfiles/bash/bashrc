@@ -1,0 +1,3 @@
+# wird ausgeführt, wenn die Shell nicht mit --login gestartet wurde
+. ~/.environment.conf
+

@@ -1,0 +1,47 @@
+#Autor: Florian Mayer
+#Datum: 31.August 2013
+#
+####################
+
+
+[Brainstorming für Loggig Funktionen]
+
+basic_log(blog)	(Gibt einen übergebenen Text (stdin) oder "$@" auf der Standardausgabe mittels
+		echo aus)
+color_log(clog)	(Gibt einen übergebenen Text (stdin oder $@) farbig auf der Standardausgabe
+		mittels echo und den term_colors.sh Funktionen aus. Die Parameter sind folgende:)
+		- stdin: Text
+		- $1: Farbcode
+		- $2 - $#: test
+
+		Verhalten: Überprüfung des Farbcodes ob im aktuellen KonText überhaupt 
+		genügend Farbcodes zur Verfügung stehen. Danach wird der Text mit den 
+		vorhandenen Funktionen eingefärbt und auf der Standardausgabe ausgegeben.
+
+format_log(flog)(Wie color_log, nur dass zusätzlich noch die Optionen wie z.B. bold o.ä. 
+		eingesetzt werden können. Parameter sind folgende:)
+		- stdin: Text
+		- $1: Farbcodes
+		- $2: Formatcodes z.B. $2="bold,blink,dim" (siehe quoted_log)
+		
+quoted_log(qlog)(Wie color_log, nur dass die Funktion Parameter lediglich über die
+		Standardeingabe akzeptiert. Parameter sind also folgende)
+		- stdin: Text
+		- $@: Text
+		
+		Die Formatierung erfolgt in Text per Quoting
+		@[formatcode],[formatcode],[...]{[auszugebender Text]}
+		
+		Die Formatcodes sind: 
+		- bold
+		- blink
+		- under
+		- dim
+		- negative
+		- color<number>
+
+		Ein Beispiel: echo '@bold,blink,color7{abc,wie geht es dir?}' | quoted_log
+
+Alle Loggin-Funktionen sollen am anfang jeder Zeile die in der Skirptdatei konfigurierbaren
+Informationen anzeigen:
+[datum|caller|tty] Text
