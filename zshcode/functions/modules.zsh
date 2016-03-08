@@ -6,14 +6,14 @@ sl-mod-new(){
         return 1
     fi
 
-    local new=$HOME/repos/git/shellyCode/shell/functions/$1.sh
+    local new=$HOME/repos/git/shellyCode/zshcode/functions/$1.sh
     echo \#$1 > $new
     vim $new
     return 0
 }
 
 sl-mod-list(){
-    for i in $HOME/repos/git/shellyCode/shell/functions/*; do
+    for i in $HOME/repos/git/shellyCode/zshcode/functions/*; do
         echo $i
     done
 

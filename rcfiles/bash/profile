@@ -9,38 +9,45 @@ done
 
 ##
 # Prompt configuration
-PROMPT_COMMAND="$(sl-get-pc)"
+PROMPT_COMMAND="$(sl-get-pc); on-proco"
 SL_SMALL="\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\u\[${TERM_RESET}\]@\\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\[${TERM_BOLD}\]\[${FG_BLACK}\]\[${BG_CYAN}\]\h\[${TERM_RESET}\]${DELIMITER}\s\V on \l${DELIMITER}Jobs: \j${DELIMITER}dir: \w"
 SL_TINY="$>> "
+
+on-proco(){
+    sl-log-persistent
+}
 
 ##
 # Bash configuration
 shopt -s extglob
+shopt -s histverify
+
+HISTTIMEFORMAT="%d/%m/%y %T "
 
 ## 
 # Loginscreen
-sl-title_screen(){
-    local title=""
-
-    while read i; do
-       echo $i | \
-          sl-rlog 5 inpipe "Sourcing\\|[0-9a-z_]*\\.sh\\|shellyCode" | \
-          sl-rlog 7 inpipe "home\\/florian\\|\\/shell" | \
-          sl-rlog 6 inpipe "repos\\/git\\|functions" | \
-          sl-rlog 4 dim "\\.\\.\\." 
-    done < <(
-        for i in ~/repos/git/shellyCode/bashcode/functions/*; do
-    	    echo Sourcing $i ...
-        done
-    )
-
-    sl-onos-exec \
-        cygwin7 "figlet -f script wetL?!" \
-        cygwinxp "figlet -f script wetL?!" \
-        linux "echo fuck! | cowsay -e o0 -n | cowthink -e 00 -n | cowthink -e -- -n | sl-flog 5 dim"
-        
-	echo -e "\n"$SL_TERM_RESET
-}
+#sl-title_screen(){
+#    local title=""
+#
+#    while read i; do
+#       echo $i | \
+#          sl-rlog 5 inpipe "Sourcing\\|[0-9a-z_]*\\.sh\\|shellyCode" | \
+#          sl-rlog 7 inpipe "home\\/florian\\|\\/shell" | \
+#          sl-rlog 6 inpipe "repos\\/git\\|functions" | \
+#          sl-rlog 4 dim "\\.\\.\\." 
+#    done < <(
+#        for i in ~/repos/git/shellyCode/bashcode/functions/*; do
+#    	    echo Sourcing $i ...
+#        done
+#    )
+#
+#    sl-onos-exec \
+#        cygwin7 "figlet -f script wetL?!" \
+#        cygwinxp "figlet -f script wetL?!" \
+#        linux "echo fuck! | cowsay -e o0 -n | cowthink -e 00 -n | cowthink -e -- -n | sl-flog 5 dim"
+#        
+#	echo -e "\n"$SL_TERM_RESET
+#}
 
 ##
 # Führt ein bestimmtes Kommando n mal aus
@@ -92,4 +99,3 @@ sl-list-spaces(){
 	done
 }
 
-sl-title_screen

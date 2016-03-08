@@ -1,15 +1,16 @@
+
 ##
 # bash
 ##
-alias edit="vim ~/.profile"
+alias edit="nvim ~/.profile"
 alias funcs="declare -F"
 alias rld-shlib=". ~/.profile"
 alias rld-repos="cd ~/repos/git/shellyRepo/; ./init.sh; cd -"
-alias ed-shlib="vim ~/repos/git/shellyCode/shell/functions"
-alias ed-admin="vim $HOME/repos/git/admintools"
-alias ed-vimrc="vim ~/.vimrc"
-alias ed-al="vim ~/repos/git/shellyCode/shell/functions/misc_aliasses.sh"
-alias ed-repconf="vim ~/repos/git/shellyRepo/shellyRepoConf.sh"
+alias ed-shlib="nvim ~/repos/git/shellyCode/zshcode/functions"
+alias ed-admin="nvim $HOME/repos/git/admintools"
+alias ed-nvimrc="nvim ~/.config/nvim/init.vim"
+alias ed-al="nvim ~/repos/git/shellyCode/zshcode/functions/misc_aliasses.sh"
+alias ed-repconf="nvim ~/repos/git/shellyRepo/shellyRepoConf.sh"
 
 ##
 # ls
@@ -36,8 +37,7 @@ alias hasquefique="ghci"
 alias hassgefick="ghci"
 alias copy-pkgconfig="cp /usr/share/pacman/PKGCONFIG.sample"
 alias luarocks-upload="luarocks upload --api-key=\"mHcERL228mI5ujYP288RPT5F1yG75Z4686WPtX9D\" "
-alias t="todo.sh"
-TF_ALIAS=fuck alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+alias vim=nvim
 
 ##
 # Sed & grep
@@ -49,6 +49,7 @@ alias grep="grep -E --color"
 # Locations 
 ##
 alias "cdback"="cd $OLDPWD"
+alias "cdrep"="cd $HOME/repos/git/"
 alias "cdenv"="cd $HOME/environment"
 alias "cdetc"="cd /etc"
 alias "cdclib"="cdenv; cd code/c/clib"

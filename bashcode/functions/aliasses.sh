@@ -1,14 +1,14 @@
 ##
 # bash
 ##
-alias edit="vim ~/.profile"
+alias ed-pro="vim ~/.profile"
 alias funcs="declare -F"
 alias rld-shlib=". ~/.profile"
 alias rld-repos="cd ~/repos/git/shellyRepo/; ./init.sh; cd -"
-alias ed-shlib="vim ~/repos/git/shellyCode/shell/functions"
+alias ed-shlib="vim ~/repos/git/shellyCode/bashcode/functions"
 alias ed-admin="vim $HOME/repos/git/admintools"
 alias ed-vimrc="vim ~/.vimrc"
-alias ed-al="vim ~/repos/git/shellyCode/shell/functions/misc_aliasses.sh"
+alias ed-al="vim ~/repos/git/shellyCode/bashcode/functions/aliasses.sh"
 alias ed-repconf="vim ~/repos/git/shellyRepo/shellyRepoConf.sh"
 
 ##
@@ -30,14 +30,11 @@ sl-onos-ret darwin && {
 ##
 # Programming stuff
 ##
+alias sl-to="xfce4-terminal --command=\"bash -l\""
 alias prepl="perl -d -e 1"
-alias le-hasquel="ghci"
 alias hasquefique="ghci"
-alias hassgefick="ghci"
 alias copy-pkgconfig="cp /usr/share/pacman/PKGCONFIG.sample"
 alias luarocks-upload="luarocks upload --api-key=\"mHcERL228mI5ujYP288RPT5F1yG75Z4686WPtX9D\" "
-alias t="todo.sh"
-TF_ALIAS=fuck alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
 
 ##
 # Sed & grep
@@ -48,6 +45,9 @@ alias grep="grep -E --color"
 ##
 # Locations 
 ##
+alias "sl-thu"="(nohup thunar . >/dev/null 2>&1) >/dev/null"
+alias "cdstud"="cd /home/florian/ownCloud/documents/Stud_MasterInf/4-SS2016"
+alias "cdwork"="cd /home/florian/ownCloud/work/Florian\\ Mayer/"
 alias "cdback"="cd $OLDPWD"
 alias "cdenv"="cd $HOME/environment"
 alias "cdetc"="cd /etc"
