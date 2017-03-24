@@ -3,7 +3,7 @@
 ##
 # Tars all files in the current directory
 ##
-sh-tar-cur(){
+sl-tar-cur(){
 	[ "$1" = "--help" -o "$1" = "-h" ] && {
 		cat << EOL
 usage: sh-tar-cur <name-of-archive>

@@ -17,7 +17,15 @@ EOF
     local computer=$2
     local keyboard=de
 
-    rdesktop -k $keyboard -u ${computer%%.*}\\$user -d $domain -g $resolution -p - $computer
+    rdesktop -k $keyboard \
+        -u .\\$user \
+        -d $domain -g $resolution \
+        -p - $computer
+    return 0
+}
+
+sl-connect-rdesktop-ezs(){
+    sl-connect-rdesktop+share Administrator 141.60.125.29 /home/florian
     return 0
 }
 
@@ -41,6 +49,9 @@ EOF
     local keyboard=de
     local share_path="$3"
 
-    rdesktop -k $keyboard -u ${computer%%.*}\\$user -d $domain -g $resolution -p - $computer -r disk:rdp_share="$3"
+    rdesktop -k $keyboard \
+        -u .\\$user \
+        -d $domain -g $resolution \
+        -p - $computer -r disk:rdp_share="$3"
     return 0
 }

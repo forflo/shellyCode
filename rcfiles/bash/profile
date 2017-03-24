@@ -1,11 +1,16 @@
 #!/bin/bash
 # Sourcing the used functions
 
+echo "[~/.profile] Sourcing nix.sh"
+. /etc/profile.d/nix.sh
 echo "[~/.profile] Sourcing initial Variables"
 . ~/.environment.conf
-for i in ~/repos/git/shellyCode/bashcode/functions/*; do
+for i in $(echo ~/repos/git/shellyCode/bashcode/functions/* | \
+    tr ' ' "\n" | grep -v logger.sh); do
     . $i > /dev/null
 done
+
+export LD_LIBRARY_PATH="/usr/local/lib"
 
 ##
 # Prompt configuration
@@ -24,7 +29,7 @@ shopt -s histverify
 
 HISTTIMEFORMAT="%d/%m/%y %T "
 
-## 
+##
 # Loginscreen
 #sl-title_screen(){
 #    local title=""
@@ -34,7 +39,7 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 #          sl-rlog 5 inpipe "Sourcing\\|[0-9a-z_]*\\.sh\\|shellyCode" | \
 #          sl-rlog 7 inpipe "home\\/florian\\|\\/shell" | \
 #          sl-rlog 6 inpipe "repos\\/git\\|functions" | \
-#          sl-rlog 4 dim "\\.\\.\\." 
+#          sl-rlog 4 dim "\\.\\.\\."
 #    done < <(
 #        for i in ~/repos/git/shellyCode/bashcode/functions/*; do
 #    	    echo Sourcing $i ...
@@ -45,7 +50,7 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 #        cygwin7 "figlet -f script wetL?!" \
 #        cygwinxp "figlet -f script wetL?!" \
 #        linux "echo fuck! | cowsay -e o0 -n | cowthink -e 00 -n | cowthink -e -- -n | sl-flog 5 dim"
-#        
+#
 #	echo -e "\n"$SL_TERM_RESET
 #}
 
@@ -54,7 +59,7 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 # $1: Zahl der wiederholungen
 sl-dotimes(){
 	T_QUOTE="@"
-	HELP='usage: $0 <number of repeats> [-i] <commandstring> 
+	HELP='usage: $0 <number of repeats> [-i] <commandstring>
 (<number of repeats> can be a positive number or the ~ symbol for infinite loops)'
 	cnt=$1
 	if [ "$2" = "-i" ]; then
@@ -64,7 +69,7 @@ sl-dotimes(){
 			eval "$command"
 		done
 	elif [[ "$1" == --[Hh][Ee][Ll][Pp] ]] || (($#==0)) ; then
-		echo "$HELP"	
+		echo "$HELP"
 	elif [[ "$1" == '~' ]]; then
 		shift 1;
 		while :; do
@@ -73,7 +78,7 @@ sl-dotimes(){
 	else
 		shift 1
 		for ((i=0;i<$cnt;i++)); do
-			eval $@ 
+			eval $@
 		done
 	fi
 }
@@ -94,8 +99,7 @@ sl-bigprompt(){
 }
 
 sl-list-spaces(){
-	for i in *; do 
+	for i in *; do
 		du -hs "$i"
 	done
 }
-

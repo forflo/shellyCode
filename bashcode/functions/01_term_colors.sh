@@ -25,14 +25,6 @@ export SL_BG_WHITE=$(tput setab 7)
 export SL_BG_ARR=(SL_BG_BLACK SL_BG_RED SL_BG_GREEN SL_BG_YELLOW SL_BG_BLUE \
                 SL_BG_PURPLE SL_BG_CYAN SL_BG_WHITE)
 
-#Extended Color-Values
-export SL_TERM_COLORS=$(tput colors)
-export SL_TERM_COLORS_VALUES=
-for ((i=0; i<$SL_TERM_COLORS; i++)); do
-	SL_TERM_COLORS_VALUES[i]="$(tput setaf $i)" # innerhalb von [] müssen variablen nicth
-						 # mit $ gekennzeichnet werden, da es sich
-						 # hier um einen arithmetischen ausdruck handelt!
-done
 
 #Formatting
 export SL_TERM_BOLD=$(tput bold)

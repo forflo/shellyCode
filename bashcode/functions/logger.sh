@@ -7,6 +7,15 @@
 #   0: on success
 #   1: on failure
 ##
+#Extended Color-Values
+export SL_TERM_COLORS=$(tput colors)
+export SL_TERM_COLORS_VALUES=
+for ((i=0; i<$SL_TERM_COLORS; i++)); do
+	SL_TERM_COLORS_VALUES[i]="$(tput setaf $i)" # innerhalb von [] müssen variablen nicth
+						 # mit $ gekennzeichnet werden, da es sich
+						 # hier um einen arithmetischen ausdruck handelt!
+done
+
 sl-blog(){
 	[ "$1" = "--help" -o "$1" = "-h" ] && {
 		cat << EOL

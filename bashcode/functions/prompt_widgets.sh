@@ -21,8 +21,8 @@ sl-print-notify(){
     for widget in ${!SL_WIDGETS_STATUS[*]}; do
         local widget_arr=${SL_WIDGETS_STATUS[$widget]}
         
-        echo $(eval "echo \${${widget_arr}[\"data\"]}") 
-        echo $(eval "echo \${${widget_arr}[\"oldval\"]}") 
+        eval echo "\${${widget_arr}[\"data\"]}"
+        eval echo "\${${widget_arr}[\"oldval\"]}"
 
     done
 }
@@ -66,17 +66,17 @@ sl-get-widgets(){
     for widget in ${!SL_WIDGETS_STATUS[*]}; do
         local widget_arr=${SL_WIDGETS_STATUS[$widget]}
 
-        widget_data[index]=$(eval "echo \${${widget_arr}[\"data\"]}") 
-        widget_foreground[index]=$(eval "echo \${${widget_arr}[\"foreground\"]}")
-        widget_background[index]=$(eval "echo \${${widget_arr}[\"background\"]}")
-        widget_enable[index]=$(eval "echo \${${widget_arr}[\"enable\"]}")
-        widget_delimiter[index]=$(eval "echo \${${widget_arr}[\"delimiter\"]}")  
-        widget_triggered[index]=$(eval "echo \${${widget_arr}[\"triggered\"]}")
-        widget_del_fg[index]=$(eval "echo \${${widget_arr}[\"del_foreground\"]}")
-        widget_del_bg[index]=$(eval "echo \${${widget_arr}[\"del_background\"]}")
-        widget_del_fmt[index]=$(eval "echo \${${widget_arr}[\"del_format\"]}")
-        widget_trigger[index]=$(eval "echo \${${widget_arr}[\"trigger\"]}")
-        widget_format[index]=$(eval "echo \${${widget_arr}[\"format\"]}")
+        eval widget_data[index]="\${${widget_arr}[\"data\"]}"
+        eval widget_foreground[index]="\${${widget_arr}[\"foreground\"]}"
+        eval widget_background[index]="\${${widget_arr}[\"background\"]}"
+        eval widget_enable[index]="\${${widget_arr}[\"enable\"]}"
+        eval widget_delimiter[index]="\${${widget_arr}[\"delimiter\"]}"
+        eval widget_triggered[index]="\${${widget_arr}[\"triggered\"]}"
+        eval widget_del_fg[index]="\${${widget_arr}[\"del_foreground\"]}"
+        eval widget_del_bg[index]="\${${widget_arr}[\"del_background\"]}"
+        eval widget_del_fmt[index]="\${${widget_arr}[\"del_format\"]}"
+        eval widget_trigger[index]="\${${widget_arr}[\"trigger\"]}"
+        eval widget_format[index]="\${${widget_arr}[\"format\"]}"
 
         ((index++))
     done
